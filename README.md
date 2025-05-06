@@ -37,7 +37,7 @@
 > _Below are example visuals – replace these with your own bot screenshots_
 
 ###  ♟️ Live Match View
-![Challenge Example]((https://i.imgur.com/B1bkeob.png))
+![Challenge Example](https://i.imgur.com/B1bkeob.png))
 
 ### 🔘  Landingpage
 ![Live Match](https://i.imgur.com/JB0uUqg.png))
