@@ -36,11 +36,11 @@
 
 > _Below are example visuals – replace these with your own bot screenshots_
 
-### 🔘 Match Challenge
-![Challenge Example](https://via.placeholder.com/600x300.png?text=Challenge+Embed)
+###  ♟️ Live Match View
+![Challenge Example](https://via.placeholder.com/600x300.png?text=Challenge+Embed](https://i.imgur.com/B1bkeob.png)
 
-### ♟️ Live Match View
-![Live Match](https://via.placeholder.com/600x300.png?text=Live+Chess+Match)
+### 🔘  Landingpage
+![Live Match][https://via.placeholder.com/600x300.png?text=Live+Chess+Match](https://i.imgur.com/JB0uUqg.png)
 
 ---
 
