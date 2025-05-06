@@ -37,10 +37,10 @@
 > _Below are example visuals – replace these with your own bot screenshots_
 
 ###  ♟️ Live Match View
-![Challenge Example](https://via.placeholder.com/600x300.png?text=Challenge+Embed](https://i.imgur.com/B1bkeob.png)
+![Challenge Example]([https://i.imgur.com/JB0uUqg.png](https://i.imgur.com/B1bkeob.png))
 
 ### 🔘  Landingpage
-![Live Match][https://via.placeholder.com/600x300.png?text=Live+Chess+Match](https://i.imgur.com/JB0uUqg.png)
+![Live Match][[https://via.placeholder.com/600x300.png?text=Live+Chess+Match](https://i.imgur.com/JB0uUqg.png](https://i.imgur.com/JB0uUqg.png))
 
 ---
 
