@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elo Explained - Chessy.gg</title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/public/styles/styles.css">
+  <link rel="stylesheet" href="/public/styles/help.css">
+  <link rel="stylesheet" href="/public/styles/header-landing.css">
+  <link rel="stylesheet" href="/public/styles/footer-landing.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+    <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+        <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+        <a href="/public-servers" class="menu-link">Public Servers</a>
+        <a href="/help" class="menu-link">Help</a>
+        <a href="/status" class="menu-link">Status</a>
+      </nav>
+  </div>
+  <div class="navbar-right">
+    <% if (!user) { %>
+    <a href="/add-server" class="add-server-btn">
+      <i class="fas fa-tachometer-alt"></i> Add to Server
+    </a>
+    <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Log in with Discord
+    </a>
+     <% } %>
+     <% if (user) { %>
+     <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Dashboard
+    </a>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+  </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+      <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+      <a href="/public-servers" class="menu-link">Public Servers</a>
+      <a href="/help" class="menu-link">Help</a>
+      <a href="/status" class="menu-link">Status</a>
+      <div class="menu-buttons">
+      <% if (!user) { %>
+        <a href="/add-server" class="add-server-mobile">
+          <i class="fas fa-tachometer-alt"></i> Add to Server
+        </a>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Log in with Discord
+        </a>
+        <% } %>
+        <% if (user) { %>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Dashboard
+        </a>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <section class="hero">
+    <h1>Elo Explained</h1>
+    <p>Discover how Chessy.gg uses the Elo rating system to measure player skill and ensure fair competition.</p>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">What is the Elo Rating System?</h2>
+    <div class="text-content">
+      <p>The Elo rating system, created by Arpad Elo, is a method for calculating the relative skill levels of players in competitive games. It’s used in chess, esports, and more to provide fair matchmaking and evaluate performance.</p>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">How Does Elo Work at Chessy.gg?</h2>
+    <div class="text-content">
+      <h3>1. Pre-Game Expectations</h3>
+      <p>Before each match, the system calculates the expected outcome based on player ratings:</p>
+      <ul class="steps-list">
+        <li>Higher-rated players are expected to win more often.</li>
+        <li>Lower-rated players earn more points if they win.</li>
+      </ul>
+
+      <h3>2. Calculating Expectations</h3>
+      <p>The expected scores for each player are calculated using the formula:</p>
+      <pre class="code-snippet">
+E_A = 1 / (1 + 10^((R_B - R_A) / 400))
+E_B = 1 / (1 + 10^((R_A - R_B) / 400))
+      </pre>
+      <p>
+        Where:
+        <ul>
+          <li><code>E_A</code> is Player A's expected score</li>
+          <li><code>R_A</code> is Player A's rating</li>
+          <li><code>R_B</code> is Player B's rating</li>
+        </ul>
+      </p>
+
+      <h3>3. Adjusting Ratings</h3>
+      <p>After the match, the actual outcome is compared to the expected outcome, and ratings are adjusted accordingly:</p>
+      <pre class="code-snippet">
+R_A' = R_A + K * (S_A - E_A)
+R_B' = R_B + K * (S_B - E_B)
+      </pre>
+      <p>
+        Where:
+        <ul>
+          <li><code>S_A</code> is Player A's actual score (1 for a win, 0.5 for a draw, 0 for a loss)</li>
+          <li><code>K</code> is the adjustment factor (usually 20 for Chessy.gg)</li>
+        </ul>
+      </p>
+
+      <h3>4. Scenarios</h3>
+      <p>Let’s break it down with examples:</p>
+      <ul class="examples-list">
+        <li><strong>Win:</strong> A lower-rated player defeating a higher-rated opponent earns more points.</li>
+        <li><strong>Draw:</strong> A draw results in a smaller rating adjustment for both players.</li>
+        <li><strong>Loss:</strong> A higher-rated player loses fewer points when defeated by a lower-rated opponent.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">Why Use Elo?</h2>
+    <div class="text-content">
+      <p>The Elo system provides:</p>
+      <ul class="benefits-list">
+        <li><strong>Fairness:</strong> Ratings reflect skill levels accurately over time.</li>
+        <li><strong>Competitiveness:</strong> Matches are exciting and balanced.</li>
+        <li><strong>Progress Tracking:</strong> See how your skill improves with every game.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">Tips for Climbing the Elo Ladder</h2>
+    <div class="text-content">
+      <ul class="tips-list">
+        <li>Play regularly to improve consistency.</li>
+        <li>Analyze your games to identify weaknesses.</li>
+        <li>Challenge players with slightly higher ratings to maximize potential gains.</li>
+        <li>Maintain a positive mindset and learn from losses.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+  <footer class="footer">
+    <p>© 2024 Chessy.gg | Built with passion for chess players everywhere. <a href="/privacy">Privacy Policy</a></p>
+  </footer>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  
+<script>
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+</script>
+</body>
+</html>

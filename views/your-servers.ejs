@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Chessy</title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+ <link rel="stylesheet" href="/public/styles/styles.css">
+ <link rel="stylesheet" href="/public/styles/server.css">
+ <link rel="stylesheet" href="/public/styles/header.css">
+ <link rel="stylesheet" href="/public/styles/footer.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+    <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+  </nav>
+  </div>
+  <div class="navbar-right">
+     <% if (user) { %>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+      </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+      <div class="menu-buttons">
+        <% if (user) { %>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+  <div class="container">
+    <h2>Your Discord-Servers</h2>
+   <ul>
+  <% servers.forEach(server => { %>
+    <li>
+      <div class="server-info">
+        <% if (server.icon) { %>
+          <img src="<%= server.icon %>" alt="<%= server.name %>">
+        <% } %>
+        <div>
+          <h3><%= server.name %></h3>
+          <% if (server.botInGuild) { %>
+            <p>✅ Bot ist bereits in diesem Server</p>
+          <% } else { %>
+            <p>Der Bot ist noch nicht in diesem Server</p>
+          <% } %>
+        </div>
+      </div>
+      <% if (!server.botInGuild) { %>
+        <a href="/invite/<%= server.id %>">
+          <button class="glow">Bot einladen</button>
+        </a>
+      <% } else { %>
+        <a href="/configure/<%= server.id %>">
+          <button class="glow">Configure Bot</button>
+        </a>
+      <% } %>
+    </li>
+  <% }); %>
+</ul>
+</div>
+  
+ <footer class="footer">
+    <p>© 2024 Chessy.gg | Built with passion for chess players everywhere. <a href="/privacy">Privacy Policy</a></p>
+  </footer>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>  
+  <script>
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+
+</script>
+</body>
+</html>

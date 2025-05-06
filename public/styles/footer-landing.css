@@ -1,0 +1,19 @@
+.footer {
+  bottom: 0; /* Am unteren Rand positionieren */
+  left: 0; /* Über die gesamte Breite */
+  width: 100%; /* Breite des Footers */
+  text-align: center;
+  color: #cfcfcf;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  z-index: 100; /* Über allen anderen Elementen anzeigen */
+  margin-bottom: 30px;
+  margin-top: 30px;  
+}
+
+.footer a {
+  color: #5865f2;
+  text-decoration: none;
+  font-weight: 600;
+}
+

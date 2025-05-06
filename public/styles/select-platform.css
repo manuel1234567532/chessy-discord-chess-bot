@@ -1,0 +1,145 @@
+  .role-selection {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 50px;
+    }
+
+    .role-container {
+      text-align: center;
+      padding: 20px;
+      border-radius: 15px;
+      width: 200px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #141414, #161616);
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      text-decoration: none; /* Remove underline */
+    }
+
+    .role-container:hover {
+      transform: scale(1.1);
+      border-color: #00ff99;
+      box-shadow: 0 0 15px rgb(39 102 174 / 70%), 0 0 30px rgb(39 56 174 / 50%);
+    }
+
+    .role-container i {
+      font-size: 50px;
+      color: #5bc0de !important; /* Force light blue color for icons */
+      margin-bottom: 10px;
+    }
+    
+    .role-container svg {
+      color: #4260f5;
+    }
+
+    .role-container h3 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #eaeaea;
+      margin: 0;
+      text-decoration: none; /* Prevent underlining */
+      margin-top: 10px;
+    }
+
+    .role-container:hover i {
+      color: #00ccff !important; /* Add a hover effect for icons */
+    }
+
+.welcome {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-info {
+  margin-right: 10px; /* Abstand zwischen Avatar und Benutzername */
+}
+
+.user-avatar {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  border: 3px solid #5865f2;
+}
+
+.username-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Ausrichtung des Textes */
+}
+
+.username-upper {
+  font-size: 30px;
+  color: white;
+}
+
+.at-symbol {
+    color: #5865f2;
+    font-size: 20px;
+    bottom: 15px;
+    position: relative;
+}
+
+.welcome h2 {
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  text-align: left;
+  margin: 0; /* Verhindert zusätzlichen Abstand */
+}
+@media (min-width: 768px) {
+    .welcome {
+        margin-right: 300px;
+    }
+}
+
+
+@media (max-width: 768px) {
+ .welcome {
+        margin-right: 150px;
+    }
+}
+
+ .top-banner {
+      background: linear-gradient(135deg, #1e1e2f, #2c2c54);
+      color: #fff;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: sticky;
+      top: -100px;
+      z-index: 100;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: top 0.5s ease;
+    }
+
+    .top-banner.show {
+      top: 0;
+    }
+
+    .top-banner p {
+      margin: 0;
+      font-size: 16px;
+      text-align: center;
+      flex: 1;
+    }
+
+    .top-banner button {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      margin-left: auto;
+    }
+
+    .top-banner button:hover {
+      color: #5865f2;
+    }
+
+    .top-banner button i {
+      font-size: 22px;
+    }

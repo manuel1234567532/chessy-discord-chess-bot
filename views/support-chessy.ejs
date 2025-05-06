@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support Us - Chessy.gg</title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/public/styles/styles.css">
+  <link rel="stylesheet" href="/public/styles/help.css">
+  <link rel="stylesheet" href="/public/styles/header-landing.css">
+  <link rel="stylesheet" href="/public/styles/footer-landing.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+    <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+        <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+        <a href="/public-servers" class="menu-link">Public Servers</a>
+        <a href="/help" class="menu-link">Help</a>
+        <a href="/status" class="menu-link">Status</a>
+      </nav>
+  </div>
+  <div class="navbar-right">
+    <% if (!user) { %>
+    <a href="/add-server" class="add-server-btn">
+      <i class="fas fa-tachometer-alt"></i> Add to Server
+    </a>
+    <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Log in with Discord
+    </a>
+     <% } %>
+     <% if (user) { %>
+     <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Dashboard
+    </a>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+  </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+      <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+      <a href="/public-servers" class="menu-link">Public Servers</a>
+      <a href="/help" class="menu-link">Help</a>
+      <a href="/status" class="menu-link">Status</a>
+      <div class="menu-buttons">
+      <% if (!user) { %>
+        <a href="/add-server" class="add-server-mobile">
+          <i class="fas fa-tachometer-alt"></i> Add to Server
+        </a>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Log in with Discord
+        </a>
+        <% } %>
+        <% if (user) { %>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Dashboard
+        </a>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <section class="hero">
+    <h1>Support Chessy.gg</h1>
+    <p>Help us keep Chessy.gg free and running for everyone!</p>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">Why Your Support Matters</h2>
+    <div class="text-content">
+      <p>Chessy.gg is built and maintained by a small team of passionate individuals who love chess and want to share this joy with the world. Providing this service comes with ongoing costs such as:</p>
+      <ul class="tips-list">
+        <li>Server hosting to ensure smooth and reliable gameplay.</li>
+        <li>Development and updates to enhance features and fix bugs.</li>
+        <li>Support for our growing community.</li>
+      </ul>
+    </div>
+  </section>
+
+<section class="content-section modern-section">
+    <h2 class="section-title">How You Can Help</h2>
+    <div class="text-content modern-content">
+      <p>Chessy.gg is completely free to use, and we rely on donations to cover our operational costs. Your contributions make a big difference and help us:</p>
+      <ul class="modern-list">
+        <li>✅ Keep the service free for everyone.</li>
+        <li>⚡ Expand server capacity as our community grows.</li>
+        <li>🎮 Add new and exciting features for all users.</li>
+      </ul>
+      <p>If you love using Chessy.gg, please consider supporting us with a donation.</p>
+
+      <div class="rewards-section">
+        <h2 class="section-title">Support us via Patreon</h2>
+        <p>After subscribing and connecting your Discord account to Patreon, you will be rewarded with:</p>
+        <ul class="modern-list rewards-list">
+          <li>🌟 <b>Discord Supporter Role</b></li>
+          <li>⚙ Priority Support</li>
+          <li>🌐 Ability to customize your Chess board (BETA)</li>
+        </ul>
+      </div>
+
+      <div class="cta-container">
+       <a href="https://www.patreon.com/chessygg" class="donation-button" target="_blank" rel="noopener noreferrer">
+  <i class="fab fa-patreon"></i> Support Us on Patreon
+</a>
+      </div>
+    </div>
+</section>
+
+
+  <section class="content-section">
+    <h2 class="section-title">Thank You for Supporting Us!</h2>
+    <div class="text-content">
+      <p>Your generosity helps us continue to provide Chessy.gg as a free, high-quality chess experience for everyone. Thank you for being a part of our community and helping us grow.</p>
+    </div>
+  </section>
+</div>
+
+<footer class="footer">
+  <p>© 2024 Chessy.gg | Built with passion for chess players everywhere. <a href="/privacy">Privacy Policy</a></p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+<script>
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+</script>
+</body>
+</html>

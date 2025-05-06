@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help - Chessy.gg</title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/public/styles/styles.css">
+  <link rel="stylesheet" href="/public/styles/help.css">
+  <link rel="stylesheet" href="/public/styles/header-landing.css">
+  <link rel="stylesheet" href="/public/styles/footer-landing.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+    <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+        <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+        <a href="/public-servers" class="menu-link">Public Servers</a>
+        <a href="/help" class="menu-link">Help</a>
+        <a href="/status" class="menu-link">Status</a>
+      </nav>
+  </div>
+  <div class="navbar-right">
+    <% if (!user) { %>
+    <a href="/add-server" class="add-server-btn">
+      <i class="fas fa-tachometer-alt"></i> Add to Server
+    </a>
+    <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Log in with Discord
+    </a>
+     <% } %>
+     <% if (user) { %>
+     <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Dashboard
+    </a>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+  </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+      <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+      <a href="/public-servers" class="menu-link">Public Servers</a>
+      <a href="/help" class="menu-link">Help</a>
+      <a href="/status" class="menu-link">Status</a>
+      <div class="menu-buttons">
+      <% if (!user) { %>
+        <a href="/add-server" class="add-server-mobile">
+          <i class="fas fa-tachometer-alt"></i> Add to Server
+        </a>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Log in with Discord
+        </a>
+        <% } %>
+        <% if (user) { %>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Dashboard
+        </a>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <section class="hero">
+    <h1>Chessy Help Center</h1>
+    <p>Your ultimate guide to mastering Chessy.gg and learning the art of chess.</p>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">Getting Started with Chessy.gg</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <h3>Invite Chessy</h3>
+        <p>Use the <span class="highlight">Add to Server</span> button to bring Chessy to your Discord server.</p>
+      </div>
+      <div class="step-card">
+        <h3>Start a Game</h3>
+        <p>Begin a match by typing the command <span class="highlight">/challenge</span>.</p>
+      </div>
+      <div class="step-card">
+        <h3>Configure Settings</h3>
+        <p>Customize your server's chess experience by configuring Chessy here: <a href="/dashboard" class="highlight">Dashboard</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">FIDE Chess Rules</h2>
+    <div class="text-content">
+      <p>Chessy.gg follows the official FIDE rules. Here are the most important concepts:</p>
+      <div class="rules-grid">
+        <div class="rule-card">
+          <h3>Piece Movement</h3>
+          <p>Pawns move forward, rooks move straight, bishops diagonally, knights jump in "L" shapes, and queens can move in all directions. Kings move one square.</p>
+        </div>
+        <div class="rule-card">
+          <h3>Castling</h3>
+          <p>Move the king two squares toward a rook and the rook to the other side. Ensure no pieces are between them and neither has moved before.</p>
+        </div>
+        <div class="rule-card">
+          <h3>Check & Checkmate</h3>
+          <p>A check is when the king is under attack. Checkmate ends the game when the king cannot escape.</p>
+        </div>
+        <div class="rule-card">
+          <h3>En Passant</h3>
+          <p>A special pawn capture that occurs when a pawn moves two squares forward from its starting position and lands beside an opponent's pawn.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">Elo Rating System</h2>
+    <div class="text-content">
+      <p>Chessy.gg uses the Elo rating system to evaluate player performance. Here's how it works:</p>
+      <ul class="elo-list">
+        <li>Your Elo increases when you win and decreases when you lose, depending on your opponent's rating.</li>
+        <li>Winning against a higher-rated opponent results in a bigger rating boost.</li>
+        <li>Drawing or losing to a lower-rated opponent has a more significant impact on your rating.</li>
+        <li>Consistency and playing stronger opponents will help you climb the leaderboard.</li>
+      </ul>
+      <p>Learn more about the Elo system in our <a href="/elo-explained" class="highlight">detailed guide</a>.</p>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">Advanced Chess Tips</h2>
+    <div class="text-content">
+      <p>Once you're familiar with the basics, take your chess skills to the next level with these tips:</p>
+      <ul class="tips-list">
+        <li>Control the center of the board early in the game.</li>
+        <li>Keep your king safe by castling early.</li>
+        <li>Think a few moves ahead and anticipate your opponent's plans.</li>
+        <li>Use all your pieces to create a coordinated attack.</li>
+      </ul>
+    </div>
+  </section>
+  
+  <div class="support-section">
+  <div class="support-container">
+    <h2>Still need assistance?</h2>
+    <p>
+      Feel free to join our Discord server, where our dedicated Support Team is ready to assist you.
+    </p>
+<a href="https://discord.gg/JRMgXxNw8Q" class="support-btn">
+      <i class="fab fa-discord"></i> Join our Discord
+    </a>
+  </div>
+</div>
+</div>
+
+  <footer class="footer">
+    <p>© 2024 Chessy.gg | Built with passion for chess players everywhere. <a href="/privacy">Privacy Policy</a></p>
+  </footer>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  
+<script>
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+</script>
+</body>
+</html>

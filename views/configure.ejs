@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <title>Server Setup - <%= server.name %></title>
+  <link rel="stylesheet" href="/public/styles/styles.css">
+  <link rel="stylesheet" href="/public/styles/configure.css">
+  <link rel="stylesheet" href="/public/styles/header.css">
+  <link rel="stylesheet" href="/public/styles/footer-landing.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
+<script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+<script src="
+https://cdn.jsdelivr.net/npm/choices.js@11.0.2/public/assets/scripts/choices.min.js
+"></script>
+<link href="
+https://cdn.jsdelivr.net/npm/choices.js@11.0.2/public/assets/styles/choices.min.css
+" rel="stylesheet">
+
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+     <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+  </nav>
+  </div>
+  <div class="navbar-right">
+     <% if (user) { %>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+      </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+      <div class="menu-buttons">
+        <% if (user) { %>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <% if (server.leaderboard_channel && server.active_matches_channel && server.finished_matches_channel && server.challenges_channel) { %>
+    <div class="alert alert-success">
+      ✅ All settings are configured for your server: <%= server.name %>!
+    </div>
+  <% } else { %>
+    <div class="alert alert-warning">
+      ⚠️ Some settings are missing for your server: <%= server.name %>! Please configure the following channels:
+      <ul>
+        <% if (!server.leaderboard_channel) { %>
+          <li>Leaderboard Channel</li>
+        <% } %>
+        <% if (!server.active_matches_channel) { %>
+          <li>Active Matches Channel</li>
+        <% } %>
+        <% if (!server.finished_matches_channel) { %>
+          <li>Finished Matches Channel</li>
+        <% } %>
+        <% if (!server.challenges_channel) { %>
+          <li>Challenges Channel</li>
+        <% } %>
+      </ul>
+    </div>
+  <% } %>
+  <h2>Server: <%= server.name %></h2>
+  <form action="/configure/<%= server.id %>" method="POST">
+    <!-- Leaderboard Channel -->
+    <div class="form-group">
+      <label for="leaderboard_channel">Select the Channel for the live Leaderboard Embed:</label>
+      <div class="input-group">
+        <select id="leaderboard_channel" onchange="updateHidden('leaderboard', this.value)">
+          <option value="" disabled selected><%= selectedLeaderboardChannel %></option>
+          <% channels.forEach((channel) => { %>
+            <option value="<%= channel.id %>" <%= channel.id === server.leaderboard_channel ? 'selected' : '' %>>
+              <%= channel.name %>
+            </option>
+          <% }); %>
+        </select>
+         <button type="button" id="sendLeaderboard" class="glow">Send Leaderboard</button>
+      </div>
+    </div>
+    <input type="hidden" name="leaderboard_channel" id="hidden_leaderboard_channel" 
+           value="<%= server.leaderboard_channel %>">
+           
+      <!-- Challenges Channel -->
+    <div class="form-group">
+      <label for="challenges_channel">Select the Channel where users are able to create challenges:</label>
+      <div class="input-group">
+        <select id="challenges_channel" onchange="updateHidden('challenges_channel', this.value)">
+          <option value="" disabled selected><%= selectedChallengesChannel %></option>
+          <% channels.forEach((channel) => { %>
+            <option value="<%= channel.id %>" <%= channel.id === server.challenges_channel ? 'selected' : '' %>>
+              <%= channel.name %>
+            </option>
+          <% }); %>
+        </select>
+      </div>
+    </div>
+    <input type="hidden" name="challenges_channel" id="hidden_challenges_channel" 
+           value="<%= server.challenges_channel %>">
+
+
+    <!-- Active Matches Channel -->
+    <div class="form-group">
+      <label for="active_matches_channel">Select the Channel where active matches will be posted:</label>
+      <div class="input-group">
+      <select id="active_matches_channel" onchange="updateHidden('active_matches', this.value)">
+        <option value="" disabled selected><%= selectedActiveMatchesChannel %></option>
+        <% channels.forEach((channel) => { %>
+          <option value="<%= channel.id %>" <%= channel.id === server.active_matches_channel ? 'selected' : '' %>>
+            <%= channel.name %>
+          </option>
+        <% }); %>
+      </select>
+      </div>
+    </div>
+    <input type="hidden" name="active_matches_channel" id="hidden_active_matches_channel" 
+           value="<%= server.active_matches_channel %>">
+           
+      <!-- Finished Matches Channel -->
+    <div class="form-group">
+      <label for="finished_matches_channel">Select the Channel where finished matches will be posted:</label>
+      <div class="input-group">
+        <select id="finished_matches_channel" onchange="updateHidden('finished_matches', this.value)">
+          <option value="" disabled selected><%= selectedFinishedMatchesChannel %></option>
+          <% channels.forEach((channel) => { %>
+            <option value="<%= channel.id %>" <%= channel.id === server.finished_matches_channel ? 'selected' : '' %>>
+              <%= channel.name %>
+            </option>
+          <% }); %>
+        </select>
+      </div>
+    </div>
+    <input type="hidden" name="finished_matches_channel" id="hidden_finished_matches_channel" 
+           value="<%= server.finished_matches_channel %>">
+           
+     <!-- Select Roles -->
+ <div class="form-group">
+  <label for="roles_dropdown">Select roles which users are able to challenge:</label>
+  <select id="roles_dropdown" name="roles_dropdown" multiple>
+    <% roles.forEach((role) => { %>
+      <option value="<%= role.id %>" <%= selectedRoles.includes(role.id) ? 'selected' : '' %>>
+        <%= role.name %>
+      </option>
+    <% }); %>
+  </select>
+</div>
+
+
+    <button type="submit" class="glow save-btn">Save Changes</button>
+  </form>
+</div>
+
+ <footer class="footer">
+    <p>© 2024 Chessy.gg | Built with passion for chess players everywhere. <a href="/privacy">Privacy Policy</a></p>
+  </footer>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  const notyf = new Notyf({
+  duration: 5000, // Toast verschwindet nach 3 Sekunden
+  position: { x: 'right', y: 'bottom' }, // Unten rechts anzeigen
+});
+
+
+  function showSuccessMessage() {
+    notyf.success('Erfolgreich gespeichert!');
+  }
+
+  function showErrorMessage() {
+    notyf.error('Fehler beim Speichern der Konfiguration!');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  if (urlParams.has('success')) {
+    showSuccessMessage();
+  }
+
+  if (urlParams.has('error')) {
+    showErrorMessage();
+  }
+
+  // Event Listener für den Send Leaderboard Button
+  const sendLeaderboardButton = document.getElementById('sendLeaderboard');
+  if (sendLeaderboardButton) {
+    sendLeaderboardButton.addEventListener('click', sendLeaderboard);
+  }
+});
+  
+ function updateHidden(field, value) {
+    if (field === 'leaderboard') {
+      document.getElementById('hidden_leaderboard_channel').value = value;
+    } else if (field === 'active_matches') {
+      document.getElementById('hidden_active_matches_channel').value = value;
+    } else if (field === 'finished_matches') {
+      document.getElementById('hidden_finished_matches_channel').value = value;
+    } else if (field === 'challenges_channel') {
+      document.getElementById('hidden_challenges_channel').value = value;
+    }
+  }
+  
+ function sendLeaderboard() {
+  const channelId = document.getElementById('leaderboard_channel').value;
+  const guildId = window.location.pathname.split('/').pop(); // Extrahiere Guild-ID aus der URL
+
+  if (!channelId) {
+    notyf.error('Please select a channel first.');
+    return;
+  }
+
+  fetch('/send-leaderboard', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ channelId, guildId }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === 'success') {
+        notyf.success('Leaderboard sent successfully!');
+      } else if (data.status === 'error' && data.message.includes('already been sent')) {
+        showLeaderboardOverwriteAlert(channelId, guildId);
+      } else {
+        notyf.error(data.message || 'An unexpected error occurred.');
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      notyf.error('Failed to send leaderboard.');
+    });
+}
+
+function showLeaderboardOverwriteAlert(channelId, guildId) {
+  Swal.fire({
+    title: 'Leaderboard already sent!',
+    text: 'A leaderboard has already been sent. Would you like to replace it?',
+    icon: 'info',
+    background: '#1a1a1a',
+    color: '#eaeaea',
+    showCancelButton: true,
+    confirmButtonText: 'Replace',
+    cancelButtonText: 'Cancel',
+    focusCancel: true,
+    customClass: {
+      confirmButton: 'swal2-confirm-dark',
+      cancelButton: 'swal2-cancel-dark',
+      popup: 'swal2-dark-popup',
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      sendNewLeaderboard(channelId, guildId, true); // true = Replace existing leaderboard
+    } else {
+      notyf.error('Action cancelled. No changes made.');
+    }
+  });
+}
+
+function sendNewLeaderboard(channelId, guildId, replace = false) {
+  fetch('/send-leaderboard', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ channelId, guildId, replace }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === 'success') {
+        notyf.success('Leaderboard replaced successfully!');
+      } else {
+        notyf.error(data.message || 'An unexpected error occurred.');
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      notyf.error('Failed to replace leaderboard.');
+    });
+}
+
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const rolesDropdown = new Choices('#roles_dropdown', {
+      removeItemButton: true, // Hinzufügen der Entfernen-Schaltfläche
+      placeholder: true,
+      placeholderValue: 'Select roles',
+      searchPlaceholderValue: 'Search for a role',
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Chessy</title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/public/styles/styles.css">
+  <link rel="stylesheet" href="/public/styles/header.css">
+  <link rel="stylesheet" href="/public/styles/admin_games.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css">
+
+
+
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+     <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+    <a href="/admin/dashboard" class="menu-link">Analytics/Player</a>
+    <a href="/admin/games" class="menu-link">Active Matches</a>
+  </nav>
+  </div>
+  <div class="navbar-right">
+     <% if (user) { %>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+      </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+    <a href="/admin/dashboard" class="menu-link">Analytics/Player</a>
+    <a href="/admin/games" class="menu-link">Active Matches</a>
+      <div class="menu-buttons">
+        <% if (user) { %>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="layout-container">
+  <div class="table-header">
+    <h2>Active Games</h2>
+    <div class="switch-container">
+      <label class="switch">
+        <input type="checkbox" id="anonymousMode" onchange="toggleAnonymousMode()">
+        <span class="slider"></span>
+      </label>
+      <span>Anonymous mode?</span>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Challenger</th>
+          <th>Challenged</th>
+          <th>Game UUID</th>
+          <th>Game Status</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% games.forEach(game => { %>
+          <tr>
+            <td><%= game.challengerUsername %> (<%= game.challenger_id %>)</td>
+            <td><%= game.challengedUsername %> (<%= game.challenged_id %>)</td>
+            <td><%= game.game_uuid %></td>
+              <td>
+          <% if (game.game_status === 'not started') { %>
+            <span class="badge badge-not-started">Not started</span>
+          <% } else if (game.game_status === 'started') { %>
+            <span class="badge badge-started">Started</span>
+          <% } else if (game.game_status === 'game end') { %>
+            <span class="badge badge-end">Game ended</span>
+          <% } %>
+        </td>
+            <td><%= new Date(game.created_at).toLocaleString() %></td>
+           <td>
+  <div class="actions-container">
+    <!-- Details-Button -->
+    <button class="details-btn" onclick="showDetails('<%= game.game_uuid %>')">Details</button>
+
+    <!-- Join Game Icon -->
+    <a href="http://localhost:3000/game/<%= game.game_uuid %>" target="_blank" title="Join Game">
+      <i class="fas fa-external-link-alt join-icon"></i>
+    </a>
+  </div>
+</td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <a href="?page=<%= i %>&entriesPerPage=<%= entriesPerPage %>" 
+           class="pagination-link <%= currentPage === i ? 'active' : '' %>">
+          <%= i %>
+        </a>
+      <% } %>
+    </div>
+
+  </div>
+</div>
+
+<div id="detailsModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <h2 class="modal-header">Game Details</h2>
+    <div class="modal-body">
+      <!-- Spielinformationen -->
+      <div class="game-info">
+        <div class="info-item">
+          <strong>Challenger:</strong>
+          <span id="challenger"></span>
+        </div>
+        <div class="info-item">
+          <strong>Challenged:</strong>
+          <span id="challenged"></span>
+        </div>
+        <div class="info-item">
+          <strong>Game UUID:</strong>
+          <span id="gameUUID"></span>
+        </div>
+        <div class="info-item">
+          <strong>Game Status:</strong>
+          <span id="gameStatus"></span>
+        </div>
+        <div class="info-item">
+          <strong>Game Result:</strong>
+          <span id="gameResult"></span>
+        </div>
+        <div class="info-item">
+          <strong>Created At:</strong>
+          <span id="createdAt"></span>
+        </div>
+      </div>
+
+      <!-- Schachbrett -->
+      <div id="chessboard" class="chessboard"></div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+<script>
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+
+
+async function showDetails(gameUuid) {
+  try {
+    const response = await fetch(`/api/game-details/${gameUuid}`);
+    const data = await response.json();
+
+    if (!data.success) {
+      alert(data.message || 'Game not found');
+      return;
+    }
+
+    const game = data.game;
+
+    // Fülle die Informationen in die entsprechenden Felder
+    document.getElementById('challenger').innerText = `${game.challengerUsername} (${game.challenger_id})`;
+    document.getElementById('challenged').innerText = `${game.challengedUsername} (${game.challenged_id})`;
+    document.getElementById('gameUUID').innerText = game.game_uuid;
+    document.getElementById('gameStatus').innerText = game.game_status || 'Unknown';
+    document.getElementById('gameResult').innerText = game.game_result || 'Unknown';
+    document.getElementById('createdAt').innerText = new Date(game.created_at).toLocaleString();
+
+    // Initialisiere das Schachbrett
+    Chessboard('chessboard', {
+      position: game.fen,
+      draggable: false,
+      pieceTheme: '/public/chess-pieces/{piece}.png',
+    });
+
+    // Zeige das Modal an
+    document.getElementById('detailsModal').style.display = 'flex';
+  } catch (error) {
+    console.error('Fehler beim Laden der Spieldetails:', error);
+    alert('Fehler beim Laden der Spieldetails.');
+  }
+}
+
+function closeModal() {
+  document.getElementById('detailsModal').style.display = 'none';
+}
+function closeModal() {
+  document.getElementById('detailsModal').style.display = 'none';
+}
+
+
+ 
+  // Notyf-Instanz erstellen
+  const notyf = new Notyf({
+    duration: 5000, // Toast verschwindet nach 5 Sekunden
+    position: { x: 'right', y: 'bottom' }, // Unten rechts anzeigen
+  });
+
+  // Beim Laden der Seite den aktuellen Status laden
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const response = await fetch('/api/admin/anonymous-mode');
+      const data = await response.json();
+
+      if (data.success) {
+        document.getElementById('anonymousMode').checked = data.anonymousMode === 'yes';
+       
+      } else {
+        console.error(data.message);
+        notyf.error('Fehler beim Laden des Anonymous-Modus: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Fehler beim Laden des Anonymous-Mode-Status:', error);
+      notyf.error('Ein Fehler ist aufgetreten: Status konnte nicht geladen werden.');
+    }
+  });
+
+  // Status umschalten und in der DB aktualisieren
+  async function toggleAnonymousMode() {
+    const isEnabled = document.getElementById('anonymousMode').checked;
+    try {
+      const response = await fetch('/api/admin/anonymous-mode', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ anonymousMode: isEnabled ? 'yes' : 'no' }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        notyf.success('Anonymous Mode erfolgreich aktualisiert!');
+      } else {
+        console.error(data.message);
+        notyf.error('Fehler beim Aktualisieren des Anonymous-Modus: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Anonymous-Modus:', error);
+      notyf.error('Ein Fehler ist aufgetreten: Status konnte nicht aktualisiert werden.');
+    }
+  }
+</script>
+</body>
+</html>

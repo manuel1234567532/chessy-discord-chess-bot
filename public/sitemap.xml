@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- Home Page -->
+    <url>
+        <loc>https://chessy.gg/</loc>
+        <lastmod>2024-12-26</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- Public Servers Page -->
+    <url>
+        <loc>https://chessy.gg/public-servers</loc>
+        <lastmod>2024-12-26</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Documentation Page -->
+    <url>
+        <loc>https://chessy.gg/documentation</loc>
+        <lastmod>2024-12-26</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Help Page -->
+    <url>
+        <loc>https://chessy.gg/help</loc>
+        <lastmod>2024-12-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- Status Page -->
+    <url>
+        <loc>https://chessy.gg/status</loc>
+        <lastmod>2024-12-26</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+</urlset>

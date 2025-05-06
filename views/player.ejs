@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Games - Chessy</title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/public/styles/styles.css">
+  <link rel="stylesheet" href="/public/styles/header.css">
+  <link rel="stylesheet" href="/public/styles/player.css">
+  <link rel="stylesheet" href="/public/styles/footer-landing.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+     <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+  </nav>
+  </div>
+  <div class="navbar-right">
+     <% if (user) { %>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+      </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+      <div class="menu-buttons">
+        <% if (user) { %>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container"> 
+ <div class="profile-card">
+    <div class="profile-avatar">
+      <img src="<%= userAvatar %>" alt="<%= user.username %>'s avatar">
+    </div>
+    <div class="profile-info">
+      <h3 class="profile-name"><%= user.username %></h3>
+      <p class="profile-elo">ELO: <%= userElo %></p>
+    </div>
+  </div>
+<div class="main-content">
+  <% if (notStartedGames.total > 0) { %>
+    <div class="games-section">
+      <h2>Not Started Games</h2>
+      <% notStartedGames.items.forEach(game => { %>
+        <div class="game-entry">
+          <div class="game-header">
+            <h3>Game against @<%= game.opponent.username %></h3>
+            <div class="play-icon">
+              You play as 
+              <% if (game.playerColor === 'white') { %>
+                <i class="fas fa-chess-pawn" style="color: #ffffff;"></i>
+              <% } else { %>
+                <i class="fas fa-chess-pawn" style="color: #000000;"></i>
+              <% } %>
+            </div>
+          </div>
+          <div class="game-status">
+            Game <span class="not-started">Not Started</span>
+          </div>
+          <div class="game-server">
+            Created on Discord Server: <span><%= game.serverName %></span>
+          </div>
+          <div class="game-actions">
+            <a href="http://localhost:3000/game/<%= game.game_uuid %>">
+              <button>Join</button>
+            </a>
+          </div>
+        </div>
+      <% }) %>
+
+      <!-- Pagination for Not Started Games -->
+      <div class="pagination">
+        <% if (notStartedGames.currentPage > 1) { %>
+          <a href="?notStartedPage=<%= notStartedGames.currentPage - 1 %>" class="pagination-link">Previous</a>
+        <% } %>
+
+        <% for (let i = 1; i <= notStartedGames.totalPages; i++) { %>
+          <a href="?notStartedPage=<%= i %>" class="pagination-link <%= notStartedGames.currentPage === i ? 'active' : '' %>">
+            <%= i %>
+          </a>
+        <% } %>
+
+        <% if (notStartedGames.currentPage < notStartedGames.totalPages) { %>
+          <a href="?notStartedPage=<%= notStartedGames.currentPage + 1 %>" class="pagination-link">Next</a>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (activeGames.total > 0) { %>
+    <div class="games-section">
+      <h2>Active Games</h2>
+      <% activeGames.items.forEach(game => { %>
+        <div class="game-entry">
+          <div class="game-header">
+            <h3>Game against @<%= game.opponent.username %></h3>
+            <div class="play-icon">
+              You play as 
+              <% if (game.playerColor === 'white') { %>
+                <i class="fas fa-chess-pawn" style="color: #ffffff;"></i>
+              <% } else { %>
+                <i class="fas fa-chess-pawn" style="color: #000000;"></i>
+              <% } %>
+            </div>
+          </div>
+          <div class="game-status">
+            Game <span class="started">Started</span>
+          </div>
+          <div class="game-server">
+            Created on Discord Server: <span><%= game.serverName %></span>
+          </div>
+          <div class="game-actions">
+            <a href="http://localhost:3000/game/<%= game.game_uuid %>">
+              <button>Join</button>
+            </a>
+          </div>
+        </div>
+      <% }) %>
+
+      <!-- Pagination for Active Games -->
+      <div class="pagination">
+        <% if (activeGames.currentPage > 1) { %>
+          <a href="?activePage=<%= activeGames.currentPage - 1 %>" class="pagination-link">Previous</a>
+        <% } %>
+
+        <% for (let i = 1; i <= activeGames.totalPages; i++) { %>
+          <a href="?activePage=<%= i %>" class="pagination-link <%= activeGames.currentPage === i ? 'active' : '' %>">
+            <%= i %>
+          </a>
+        <% } %>
+
+        <% if (activeGames.currentPage < activeGames.totalPages) { %>
+          <a href="?activePage=<%= activeGames.currentPage + 1 %>" class="pagination-link">Next</a>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (completedGames.total > 0) { %>
+    <div class="games-section">
+      <h2>Completed Games</h2>
+      <% completedGames.items.forEach(game => { %>
+        <div class="game-entry">
+          <div class="game-header">
+            <h3>Game against @<%= game.opponent.username %></h3>
+            <div class="play-icon">
+              You played as 
+              <% if (game.playerColor === 'white') { %>
+                <i class="fas fa-chess-pawn" style="color: #ffffff;"></i>
+              <% } else { %>
+                <i class="fas fa-chess-pawn" style="color: #000000;"></i>
+              <% } %>
+            </div>
+          </div>
+          <div class="game-status">
+            Game <span class="ended">Ended </span>
+            <span class="badge <%= game.badgeClass %>"><%= game.resultBadge %></span>
+          </div>
+          <div class="game-server">
+            Created on Discord Server: <span><%= game.serverName %></span>
+          </div>
+          <div class="game-actions">
+            <a href="http://localhost:3000/game/<%= game.game_uuid %>">
+              <button>View</button>
+            </a>
+          </div>
+        </div>
+      <% }) %>
+
+      <!-- Pagination for Completed Games -->
+      <div class="pagination">
+        <% if (completedGames.currentPage > 1) { %>
+          <a href="?completedPage=<%= completedGames.currentPage - 1 %>" class="pagination-link">Previous</a>
+        <% } %>
+
+        <% for (let i = 1; i <= completedGames.totalPages; i++) { %>
+          <a href="?completedPage=<%= i %>" class="pagination-link <%= completedGames.currentPage === i ? 'active' : '' %>">
+            <%= i %>
+          </a>
+        <% } %>
+
+        <% if (completedGames.currentPage < completedGames.totalPages) { %>
+          <a href="?completedPage=<%= completedGames.currentPage + 1 %>" class="pagination-link">Next</a>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (notStartedGames.total === 0 && activeGames.total === 0 && completedGames.total === 0) { %>
+    <p>You currently have no games.</p>
+  <% } %>
+</div>
+</div>
+
+  <footer class="footer">
+    <p>© 2024 Chessy.gg | Built with passion for chess players everywhere. <a href="/privacy">Privacy Policy</a></p>
+  </footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+<script>
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+
+</script>
+</body>
+</html>

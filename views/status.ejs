@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Status - Chessy.gg</title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/public/styles/styles.css">
+  <link rel="stylesheet" href="/public/styles/header-landing.css">
+  <link rel="stylesheet" href="/public/styles/status.css">
+  <link rel="stylesheet" href="/public/styles/footer.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+    <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+        <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+        <a href="/public-servers" class="menu-link">Public Servers</a>
+        <a href="/help" class="menu-link">Help</a>
+        <a href="/status" class="menu-link">Status</a>
+      </nav>
+  </div>
+  <div class="navbar-right">
+    <% if (!user) { %>
+    <a href="/add-server" class="add-server-btn">
+      <i class="fas fa-tachometer-alt"></i> Add to Server
+    </a>
+    <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Log in with Discord
+    </a>
+     <% } %>
+     <% if (user) { %>
+     <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Dashboard
+    </a>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+  </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+      <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+      <a href="/public-servers" class="menu-link">Public Servers</a>
+      <a href="/help" class="menu-link">Help</a>
+      <a href="/status" class="menu-link">Status</a>
+      <div class="menu-buttons">
+      <% if (!user) { %>
+        <a href="/add-server" class="add-server-mobile">
+          <i class="fas fa-tachometer-alt"></i> Add to Server
+        </a>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Log in with Discord
+        </a>
+        <% } %>
+        <% if (user) { %>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Dashboard
+        </a>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <h1 class="page-title">System Status</h1>
+  <p>Track the real-time health of Chessy.gg systems below:</p>
+
+  <div class="status-grid">
+    <div class="status-card">
+      <h3>Website</h3>
+      <div class="status-icon">
+        <i class="<%= status.website ? 'fas fa-thumbs-up status-up' : 'fas fa-thumbs-down status-down' %>"></i>
+      </div>
+      <p class="<%= status.website ? 'status-text-up' : 'status-text-down' %>">
+        <%= status.website ? 'Operational' : 'Down' %>
+      </p>
+    </div>
+    <div class="status-card">
+      <h3>Discord Bot</h3>
+      <div class="status-icon">
+        <i class="<%= status.bot ? 'fas fa-thumbs-up status-up' : 'fas fa-thumbs-down status-down' %>"></i>
+      </div>
+      <p class="<%= status.bot ? 'status-text-up' : 'status-text-down' %>">
+        <%= status.bot ? 'Operational' : 'Down' %>
+      </p>
+    </div>
+    <div class="status-card">
+      <h3>Dashboard</h3>
+      <div class="status-icon">
+        <i class="<%= status.dashboard ? 'fas fa-thumbs-up status-up' : 'fas fa-thumbs-down status-down' %>"></i>
+      </div>
+      <p class="<%= status.dashboard ? 'status-text-up' : 'status-text-down' %>">
+        <%= status.dashboard ? 'Operational' : 'Down' %>
+      </p>
+    </div>
+  </div>
+  </div>
+
+   <footer class="footer">
+    <p>© 2024 Chessy.gg | Built with passion for chess players everywhere. <a href="/privacy">Privacy Policy</a></p>
+  </footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+<script>
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+</script>
+</body>
+</html>

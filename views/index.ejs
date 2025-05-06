@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Chessy.gg</title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/public/styles/header-landing.css">
+  <link rel="stylesheet" href="/public/styles/landing.css">
+  <link rel="stylesheet" href="/public/styles/footer-landing.css">
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+ <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+  
+   <meta name="description" content="Chessy.gg is the ultimate Discord Chess Bot, offering advanced chess features, intuitive commands, and seamless integration for chess enthusiasts on Discord.">
+    <meta name="keywords" content="Discord Chess Bot, Best Chess Bot, Chess on Discord, Chessy Bot, Chess Games Discord">
+    <meta name="author" content="Chessy.gg">
+    <meta name="robots" content="index, follow">
+	<meta name="google-site-verification" content="UGk2uwKpW1N8cqZB85DumlmGj8HdrAaZfsKlxTLssJw" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Chessy.gg - The Best Discord Chess Bot">
+    <meta property="og:description" content="Discover Chessy.gg, the most powerful Discord Chess Bot for managing chess games, tracking stats, and playing with friends seamlessly.">
+    <meta property="og:image" content="https://chessy.gg/public/img/chessy_logo.jpg">
+    <meta property="og:url" content="https://chessy.gg">
+    <meta property="og:site_name" content="Chessy.gg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Chessy.gg - The Best Discord Chess Bot">
+    <meta name="twitter:description" content="Play chess directly in Discord with Chessy.gg! The best Discord Chess Bot with advanced features for every chess lover.">
+    <meta name="twitter:image" content="https://chessy.gg/public/img/chessy_logo.jpg">
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+    <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+  </nav>
+  </div>
+  <div class="navbar-right">
+   <% if (!user) { %>
+    <a href="/add-server" class="add-server-btn">
+      <i class="fas fa-tachometer-alt"></i> Add to Server
+    </a>
+    <a href="/login" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Log in with Discord
+    </a>
+     <% } %>
+     <% if (user) { %>
+     <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Dashboard
+    </a>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+      </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+      <div class="menu-buttons">
+      <% if (!user) { %>
+        <a href="/add-server" class="add-server-mobile">
+          <i class="fas fa-tachometer-alt"></i> Add to Server
+        </a>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Log in with Discord
+        </a>
+        <% } %>
+        <% if (user) { %>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Dashboard
+        </a>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<nav class="mobile-menu">
+  <div class="menu-content">
+    <a href="/" class="menu-link">Home</a>
+    <a href="/about" class="menu-link">About</a>
+    <a href="/features" class="menu-link">Features</a>
+    <a href="/contact" class="menu-link">Contact</a>
+    <div class="menu-buttons">
+      <a href="/add-server" class="add-server-mobile">
+        <i class="fab fa-discord"></i> Add to Server
+      </a>
+      <a href="/login" class="dashboard-mobile">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-text">
+     <div class="typed-container">
+  <h1><span id="typed-text"></span></h1>
+</div>
+    <p>Join the ultimate chess platform designed for Discord communities. Compete with friends or create tournaments in seconds!</p>
+    <a href="/add-server" class="discord-btn">
+      <i class="fab fa-discord"></i> Invite Chessy
+    </a>
+  </div>
+ <div class="tilt" data-tilt>
+        <div class="bg-image"></div>
+        <img src="/public/img/pv1_vg.png" alt="Foreground" class="foreground">
+    </div>
+
+</div>
+
+
+  <div class="features">
+    <div class="feature">
+      <i class="fas fa-chess-board"></i>
+      <h3>Easy Chess Matches</h3>
+      <p>Challenge your friends or players from around the world in quick and easy games directly from Discord.</p>
+    </div>
+    <div class="feature">
+      <i class="fas fa-trophy"></i>
+      <h3>Host Tournaments</h3>
+      <p>Set up tournaments for your server with automatic brackets and game tracking.</p>
+    </div>
+    <div class="feature">
+      <i class="fas fa-server"></i>
+      <h3>Server Integration</h3>
+      <p>Enhance your Discord server with seamless chess bot integration and leaderboards.</p>
+    </div>
+  </div>
+  
+    <div class="highlight-section-main">
+  <div class="highlight-section">
+  <div class="highlight-container">
+    <div class="highlight-content image-content">
+      <img src="/public/img/showcase/showcase_challenge.gif" alt="Chessy in Action" class="highlight-gif">
+    </div>
+    <div class="highlight-content text-content">
+      <h2>Challenge your Friends directly on Discord</h2>
+      <p>
+      With just one command, dive into the world of chess. Challenge friends, compete with your community, and enjoy seamless gameplay—simple, fast, and effortless!
+      </p>
+    </div>
+  </div>
+</div>
+  <div class="highlight-section">
+  <div class="highlight-container">
+    <div class="highlight-content text-content">
+      <h2>Play Chess Seamlessly on Discord</h2>
+      <p>
+        Chessy.gg transforms your Discord server into a chess arena. With simple commands, you can start games, organize tournaments, and track leaderboards—all within Discord. Experience a seamless integration that keeps your server engaged and competitive.
+      </p>
+    </div>
+     <div class="highlight-content image-content">
+      <img src="/public/img/showcase/showcase_match.gif" alt="Chessy in Action" class="highlight-gif">
+    </div>
+  </div>
+   </div>
+    <div class="highlight-section">
+  <div class="highlight-container">
+    <div class="highlight-content image-content">
+      <img src="/public/img/showcase/showcase_player.gif" alt="Chessy in Action" class="highlight-gif">
+    </div>
+    <div class="highlight-content text-content">
+      <h2>Play Chess Seamlessly on Discord</h2>
+      <p>
+       Chessy.gg makes online chess easy and accessible. Players can join games quickly, enjoy a clean, responsive interface, and experience real-time updates. The platform enforces official chess rules automatically, ensuring fair play, while offering customizable time controls and interactive features for all skill levels.
+      </p>
+    </div>
+  </div>
+</div>
+  <div class="highlight-section">
+  <div class="highlight-container">
+    <div class="highlight-content text-content">
+      <h2>Spectate Live Chess Games</h2>
+      <p>
+        Experience the excitement of live chess with Chessy! Join games as a spectator and watch your favorite players compete in real time.
+      </p>
+    </div>
+     <div class="highlight-content image-content">
+      <img src="/public/img/showcase/showcase_viewers.png" alt="Chessy in Action" class="highlight-gif">
+    </div>
+  </div>
+   </div>
+
+<div class="swiper-container">
+<h2>Server Embeds</h2>
+  <div class="swiper-wrapper">
+   <div class="swiper-slide">
+      <img src="/public/img/showcase/showcase_challenge_server.png" alt="Showcase 1" />
+    </div>
+    <div class="swiper-slide">
+      <img src="/public/img/showcase/showcase_live.png" alt="Showcase 2" />
+    </div>
+    <div class="swiper-slide">
+      <img src="/public/img/showcase/showcase_result.png" alt="Showcase 3" />
+    </div>
+     <div class="swiper-slide">
+      <img src="/public/img/showcase/showcase_leaderboard.png" alt="Showcase 4" />
+    </div>
+  </div>
+  <!-- Navigation Buttons with Custom Icons -->
+  <div class="swiper-button-prev">
+    
+  </div>
+  <div class="swiper-button-next">
+    
+  </div>
+  <!-- Pagination -->
+  <div class="swiper-pagination"></div>
+	</div>
+</div>
+
+<div class="invite-section">
+  <div class="invite-container">
+    <h2>Invite Chessy to your Community</h2>
+    <p>
+      Bring the power of Chessy.gg to your Discord server. Engage your members with seamless chess gameplay and fun tournaments.
+    </p>
+<a href="/add-server" class="invite-btn">
+      <i class="fab fa-discord"></i> Add Chessy
+    </a>
+  </div>
+</div>
+
+
+  <footer class="footer">
+    <p>© 2024 Chessy.gg | Built with passion for chess players everywhere. <a href="/privacy">Privacy Policy</a></p>
+  </footer>
+  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tilt.js/1.2.1/tilt.jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+<script src="public/js/index.js"></script>
+</body>
+</html>

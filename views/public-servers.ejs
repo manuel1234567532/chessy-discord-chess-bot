@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Public Servers - Chessy.gg</title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/public/styles/styles.css">
+  <link rel="stylesheet" href="/public/styles/public-servers.css">
+  <link rel="stylesheet" href="/public/styles/header-landing.css">
+  <link rel="stylesheet" href="/public/styles/footer.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+    <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+  </nav>
+  </div>
+  <div class="navbar-right">
+   <% if (!user) { %>
+    <a href="/add-server" class="add-server-btn">
+      <i class="fas fa-tachometer-alt"></i> Add to Server
+    </a>
+    <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Log in with Discord
+    </a>
+     <% } %>
+     <% if (user) { %>
+     <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Dashboard
+    </a>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+      </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+      <div class="menu-buttons">
+      <% if (!user) { %>
+        <a href="/add-server" class="add-server-mobile">
+          <i class="fas fa-tachometer-alt"></i> Add to Server
+        </a>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Log in with Discord
+        </a>
+        <% } %>
+        <% if (user) { %>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Dashboard
+        </a>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <h1>Discord Servers</h1>
+  <p>🚀 Dive into the action! These servers have Chessy online and ready to play! 🎮</p>
+
+<div class="filters">
+  <input type="text" id="search-bar" class="search-bar" placeholder="Search servers...">
+  <select id="sort-dropdown" class="sort-dropdown" onchange="sortServers()">
+    <option value="none">Sort by</option>
+    <option value="members-asc">Members (ascending)</option>
+    <option value="members-desc">Members (descending)</option>
+  </select>
+</div>
+
+  <div class="servers-list">
+  <% servers.forEach(server => { %>
+    <div class="server-card">
+      <img src="<%= server.icon %>" alt="Server Icon" class="server-icon">
+      <div class="server-details">
+        <h3><%= server.name %></h3>
+        <p><%= server.members %> members</p>
+        <p><%= server.description %></p>
+      </div>
+      <% if (server.inviteLink) { %>
+        <a href="<%= server.inviteLink %>" class="join-btn">Join</a>
+      <% } else { %>
+        <p class="no-join-info">Invite link not available</p>
+      <% } %>
+    </div>
+  <% }); %>
+</div>
+</div>
+
+ <footer class="footer">
+    <p>© 2024 Chessy.gg | Built with passion for chess players everywhere. <a href="/privacy">Privacy Policy</a></p>
+  </footer>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+<script>
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+
+function sortServers() {
+  const dropdown = document.getElementById('sort-dropdown');
+  const sortOption = dropdown.value;
+  const serverCards = document.querySelectorAll('.server-card');
+  const serversList = document.querySelector('.servers-list');
+
+  // Collect servers into an array for sorting
+  const serversArray = Array.from(serverCards);
+
+  serversArray.sort((a, b) => {
+    const membersA = parseInt(a.querySelector('.server-details p').textContent.split(' ')[0]);
+    const membersB = parseInt(b.querySelector('.server-details p').textContent.split(' ')[0]);
+
+    if (sortOption === 'members-asc') {
+      return membersA - membersB;
+    } else if (sortOption === 'members-desc') {
+      return membersB - membersA;
+    }
+    return 0;
+  });
+
+  // Clear the existing list and reappend sorted servers
+  serversList.innerHTML = '';
+  serversArray.forEach((server) => {
+    serversList.appendChild(server);
+  });
+}
+
+function searchServers() {
+  const searchInput = document.getElementById('search-bar').value.toLowerCase();
+  const serverCards = document.querySelectorAll('.server-card');
+
+  serverCards.forEach((card) => {
+    const serverName = card.querySelector('.server-details h3').textContent.toLowerCase();
+    if (serverName.includes(searchInput)) {
+      card.style.display = 'block'; // Zeige den Server, wenn der Name passt
+    } else {
+      card.style.display = 'none'; // Verberge den Server, wenn der Name nicht passt
+    }
+  });
+}
+</script>
+</body>
+</html>

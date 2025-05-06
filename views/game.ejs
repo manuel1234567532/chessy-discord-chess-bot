@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chessy.gg | <%= opponent.username %> vs <%= player.username %></title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/public/styles/game-header.css">
+   <link rel="stylesheet" href="/public/styles/styles.css">
+   <link rel="stylesheet" href="/public/styles/game.css">
+  <link rel="stylesheet" href="/public/styles/footer.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+</head>
+<body>
+<audio id="sound-move" src="/public/sounds/move.mp3"></audio>
+<audio id="sound-take" src="/public/sounds/take.mp3"></audio>
+<audio id="sound-check" src="/public/sounds/check.mp3"></audio>
+<audio id="sound-checkmate" src="/public/sounds/checkmate.mp3"></audio>
+<audio id="sound-draw" src="/public/sounds/draw.mp3"></audio>
+<audio id="sound-popup" src="/public/sounds/popup.mp3"></audio>
+
+ <div class="popup-overlay" id="popup-overlay">
+  <div class="popup">
+    <h2>Login erforderlich</h2>
+    <p>Bitte melde dich mit Discord an, um das Spiel zu betreten.</p>
+    <a href="/login">Mit Discord einloggen</a>
+  </div>
+</div>
+
+<div class="popup-overlay" id="game-end-popup" style="display: none;">
+  <div class="game-end-popup">
+    <div class="game-end-header">
+      <div class="avatar-container">
+        <img id="player-avatar" src="" alt="Player Avatar" class="game-end-avatar">
+        <div id="elo-change" class="game-end-elo-badge"></div>
+      </div>
+      <div class="player-details">
+        <div id="player-name" class="game-end-player-name"></div>
+        <div id="player-elo" class="game-end-player-elo"></div>
+      </div>
+    </div>
+    <h2 id="game-end-title" class="game-end-title">Game Over!</h2>
+    <p id="game-end-message" class="game-end-message">The game has ended.</p>
+    <% if (isPlayer) { %>
+      <div class="back-buttons">
+      <button id="leave-btn" class="back-btn">Leave</button>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<div class="popup-overlay" id="spectator-game-end-popup" style="display: none;">
+  <div class="spectator-popup modern-popup">
+    <h2 class="spectator-title">Game Result</h2>
+
+    <div class="spectator-players">
+      <!-- Gewinner-Container -->
+      <div class="spectator-player winner">
+        <div class="spectator-avatar-container">
+          <img id="winner-avatar" src="" alt="Winner Avatar" class="spectator-avatar pulse-win">
+        </div>
+        <div class="spectator-player-details">
+          <span id="winner-name" class="spectator-name"></span>
+          <span class="spectator-role">Winner</span>
+        </div>
+      </div>
+
+      <!-- VS Symbol -->
+      <div class="spectator-vs" id="vs-text">VS</div>
+
+      <!-- Verlierer-Container -->
+      <div class="spectator-player loser">
+        <div class="spectator-avatar-container">
+          <img id="loser-avatar" src="" alt="Loser Avatar" class="spectator-avatar pulse-lose">
+        </div>
+        <div class="spectator-player-details">
+          <span id="loser-name" class="spectator-name"></span>
+          <span class="spectator-role">Loser</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grund für das Spielende -->
+    <p id="spectator-message" class="spectator-message"></p>
+     <div class="back-buttons">
+      <button id="leave-btn" class="back-btn">Leave</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="popup-overlay" id="menu-popup" style="display: none;">
+  <div class="game-end-popup">
+    <h2>Choose an Action</h2>
+    <div class="popup-buttons">
+      <button id="resign-button" class="resign-button">Resign</button>
+    </div>
+     <div class="popup-buttons">
+      <button id="draw-button" class="draw-button">Offer Draw</button>
+    </div>
+    <div class="close-popup">
+      <button id="close-popup-button" class="cancel-button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+<header class="navbar">
+  <div class="navbar-left">
+     <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+  </nav>
+   <div class="spectator-button" id="spectator-button" style="display: none;">
+    <i class="fas fa-eye" id="eye-icon"></i>
+    <span id="spectator-count">0 Watching</span>
+  </div>
+    <div class="admin-spectator-button" id="admin-spectator-button" style="display: none;">
+  <i class="fas fa-user-secret" id="admin-icon"></i>
+  <span id="admin-text"></span>
+</div>
+
+  </div>
+  <div class="navbar-right">
+     <% if (user) { %>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+      </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+      <div class="menu-buttons">
+        <% if (user) { %>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+ <div class="popup-overlay" id="waiting-for-player" style="display: none;">
+  <div class="popup">
+    <h2>Opponent missing!</h2>
+    <p>Waiting for opponent to join...</p>
+    <% if (isPlayer) { %>
+    <a href="/send-reminder" class="hidden-reminder-button">Send reminder</a>
+    <% } %>
+  </div>
+</div>
+
+<% if (isPlayer) { %>
+ <div id="status">
+  Am Zug: <span class="turn">Weiß</span>
+</div>
+<% } %>
+
+   <div class="chessboard">
+<div class="player-info top">
+  <div class="player">
+    <img src="<%= opponent.avatar %>" alt="<%= opponent.username %>'s Avatar" class="player-avatar">
+    <div>
+      <div class="player-name">
+        <%= opponent.username %> <span class="player-elo">(<%= opponent.elo %>)</span>
+      </div>
+      <div id="captured-pieces-top" class="captured-pieces"></div>
+    </div>
+  </div>
+  <div class="timer" id="opponent-timer"><%= opponent.timer || "10:00" %></div>
+</div>
+
+<div id="board-container">
+  <div id="board"></div>
+</div>
+
+<div class="player-info bottom">
+  <div class="player">
+    <img src="<%= player.avatar %>" alt="<%= player.username %>'s Avatar" class="player-avatar">
+    <div>
+      <div class="player-name">
+        <%= player.username %> <span class="player-elo">(<%= player.elo %>)</span>
+      </div>
+       <div id="captured-pieces-bottom" class="captured-pieces"></div>
+    </div>
+  </div>
+  <% if (isPlayer) { %>
+   <div class="menu-button" id="menu-button">
+    <i class="fas fa-bars"></i>
+  </div>
+  <% } %>
+  <div class="timer" id="player-timer"><%= player.timer || "10:00" %></div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+ // Benutzerinteraktion
+let userHasInteracted = false;
+document.addEventListener('click', () => {
+  userHasInteracted = true;
+});
+
+// Initiale Variablen und Konfiguration
+const isAuthenticated = <%= isAuthenticated ? 'true' : 'false' %>;
+const gameId = '<%= gameId %>';
+const userColor = '<%= userColor || "white" %>';
+const isPlayer = <%= isPlayer ? 'true' : 'false' %>;
+const capturedPieces = { player: [], opponent: [] };
+// Socket.IO-Verbindung
+const socket = io({
+  auth: {
+    isPlayer: isPlayer,
+    discordId: '<%= user.id %>',
+  },
+});
+
+// Spielbrett und Logik
+document.addEventListener("DOMContentLoaded", () => {
+  if (isAuthenticated) {
+    initializeGame();
+  } else {
+    document.getElementById('popup-overlay').style.display = 'flex';
+  }
+});
+
+/**
+ * Initialisiert das Spiel und das Schachbrett.
+ */
+ 
+function initializeGame() {
+  const game = new Chess('<%= fen %>');
+  const board = Chessboard('board', {
+    draggable: isPlayer,
+    position: '<%= fen %>',
+    orientation: userColor,
+    pieceTheme: '/public/chess-pieces/{piece}.png',
+    onDragStart: onDragStart(game),
+    onDrop: onDrop(game),
+  });
+  updateCapturedPieces(game);
+  setupSocketListeners(game, board);
+  updateStatus(game);
+}
+board.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+}, { passive: false });
+/**
+ * Event-Handler: Start eines Zugs.
+ * @param {Object} game - Das aktuelle Schachspiel.
+ */
+function onDragStart(game) {
+  return (source, piece) => {
+    if (!isPlayer || game.game_over()) return false;
+
+    if (
+      (userColor === 'white' && piece.startsWith('b')) ||
+      (userColor === 'black' && piece.startsWith('w'))
+    ) {
+      return false;
+    }
+
+    if (
+      (game.turn() === 'w' && userColor !== 'white') ||
+      (game.turn() === 'b' && userColor !== 'black')
+    ) {
+      return false;
+    }
+  };
+}
+
+/**
+ * Event-Handler: Abschluss eines Zugs.
+ * @param {Object} game - Das aktuelle Schachspiel.
+ */
+function onDrop(game) {
+  return (source, target) => {
+    const move = game.move({ from: source, to: target, promotion: 'q' });
+    if (move === null) return 'snapback';
+
+    playSound(move.flags.includes('c') ? 'sound-take' : 'sound-move');
+    updateCapturedPieces(game); // Gefangene Figuren aktualisieren
+    updateStatus(game);
+
+    // Zug an den Server senden
+    socket.emit('move', { gameId, fen: game.fen(), move });
+  };
+}
+
+function updateCapturedPieces(game) {
+  const initialCount = { p: 8, r: 2, n: 2, b: 2, q: 1 };
+  const capturedWhite = { p: 0, r: 0, n: 0, b: 0, q: 0 };
+  const capturedBlack = { p: 0, r: 0, n: 0, b: 0, q: 0 };
+
+  // Zähle die verbleibenden Figuren aus der FEN
+  const fen = game.fen();
+  const boardState = fen.split(' ')[0];
+
+  for (const char of boardState) {
+    if (char >= '0' && char <= '9') continue; // Zahl überspringen
+    if (char === '/') continue; // Zeilenumbruch überspringen
+
+    if (char === char.toLowerCase()) {
+      capturedBlack[char]++;
+    } else {
+      capturedWhite[char.toLowerCase()]++;
+    }
+  }
+
+  // Berechne fehlende Figuren
+  const blackCaptured = calculateMissingFigures(initialCount, capturedBlack, 'b');
+  const whiteCaptured = calculateMissingFigures(initialCount, capturedWhite, 'w');
+
+  // Update die Anzeige basierend auf userColor
+  if (userColor === 'white') {
+    document.getElementById('captured-pieces-bottom').innerHTML = blackCaptured.join(''); // Gegnerfiguren unten
+    document.getElementById('captured-pieces-top').innerHTML = whiteCaptured.join(''); // Eigene Figuren oben
+  } else {
+    document.getElementById('captured-pieces-bottom').innerHTML = whiteCaptured.join(''); // Gegnerfiguren unten
+    document.getElementById('captured-pieces-top').innerHTML = blackCaptured.join(''); // Eigene Figuren oben
+  }
+}
+
+// Berechne fehlende Figuren und gib die Bilder zurück
+function calculateMissingFigures(initialCount, currentCount, color) {
+  const result = [];
+  for (const [piece, count] of Object.entries(initialCount)) {
+    const missing = count - currentCount[piece];
+    for (let i = 0; i < missing; i++) {
+      result.push(`<img src="/public/chess-pieces/${color}${piece.toUpperCase()}.png" class="captured-piece">`);
+    }
+  }
+  return result;
+}
+
+/**
+ * Aktualisiert den Spielstatus.
+ * @param {Object} game - Das aktuelle Schachspiel.
+ */
+function updateStatus(game) {
+  const statusElement = document.getElementById('status');
+  if (!statusElement) return;
+
+  let status = '';
+  statusElement.classList.remove('game-over', 'glow');
+
+  if (game.in_checkmate()) {
+    socket.emit('gameEnd', { 
+        gameId, 
+        winnerColor: game.turn() === 'w' ? 'black' : 'white', 
+        reason: 'checkmate' 
+    });
+  } else if (game.in_threefold_repetition()) {
+    socket.emit('gameEnd', { 
+        gameId, 
+        winnerColor: null, 
+        reason: 'threefold repetition' 
+    });
+  } else if (game.insufficient_material()) { // Insufficient Material Check
+    socket.emit('gameEnd', { 
+        gameId, 
+        winnerColor: null, 
+        reason: 'insufficient material' 
+    });
+  } else if (game.in_draw()) {
+    socket.emit('gameEnd', { 
+        gameId, 
+        winnerColor: null, 
+        reason: 'draw' 
+    });
+  } else if (game.in_check()) {
+    playSound('sound-check');
+    status = `Warning: ${game.turn() === 'w' ? 'White' : 'Black'} is in check!`;
+    statusElement.classList.add('glow');
+  } else {
+    status = `Turn: <span class="turn">${game.turn() === 'w' ? 'White' : 'Black'}</span>`;
+  }
+
+  statusElement.innerHTML = status;
+}
+
+
+/**
+ * Initialisiert die Socket.IO-Listener.
+ * @param {Object} game - Das aktuelle Schachspiel.
+ * @param {Object} board - Das Schachbrett.
+ */
+function setupSocketListeners(game, board) {
+  socket.on('waitingForOpponent', showWaitingPopup);
+  socket.on('gameStart', hideWaitingPopup);
+  socket.on('move', (data) => handleMove(data, game, board));
+  socket.on('gameEnd', showGameEndPopup);
+
+  socket.emit('joinGame', gameId);
+}
+
+/**
+ * Zeigt das Popup "Warten auf Gegner".
+ */
+function showWaitingPopup() {
+  document.getElementById('waiting-for-player').style.display = 'flex';
+}
+
+/**
+ * Versteckt das Popup "Warten auf Gegner".
+ */
+function hideWaitingPopup() {
+  document.getElementById('waiting-for-player').style.display = 'none';
+}
+
+/**
+ * Behandelt eingehende Züge vom Server.
+ * @param {Object} data - Die Zugdaten.
+ * @param {Object} game - Das aktuelle Schachspiel.
+ * @param {Object} board - Das Schachbrett.
+ */
+function handleMove(data, game, board) {
+  game.load(data.fen);
+  board.position(data.fen);
+  playSound('sound-move');
+  updateStatus(game);
+  updateCapturedPieces(game);
+}
+
+/**
+ * Zeigt das End-Popup für das Spiel.
+ * @param {Object} data - Daten zum Spielende.
+ */
+ function showSpectatorGameEndPopup(data) {
+  const { winnerName, loserName, winnerAvatar, loserAvatar, reason } = data;
+  
+    if (reason === 'draw' || reason === 'threefold repetition' || reason === 'insufficient material') {
+    playSound('sound-draw');
+  } else {
+    playSound('sound-checkmate');
+  }
+
+  // Elemente abrufen
+  const winnerAvatarElement = document.getElementById('winner-avatar');
+  const loserAvatarElement = document.getElementById('loser-avatar');
+  const winnerNameElement = document.getElementById('winner-name');
+  const loserNameElement = document.getElementById('loser-name');
+  const winnerContainer = document.querySelector('.spectator-player.winner');
+  const loserContainer = document.querySelector('.spectator-player.loser');
+  const messageElement = document.getElementById('spectator-message');
+  const versusText = document.getElementById('vs-text');
+
+  // Nachricht setzen
+  messageElement.textContent = `The game ended due to ${reason}`;
+
+  // Gewinner- und Verliererdetails nur anzeigen, wenn das Spiel nicht unentschieden ist
+  if (reason === 'draw' || reason === 'threefold repetition' || reason === 'insufficient material') {
+    winnerContainer.style.display = 'none';
+    loserContainer.style.display = 'none';
+    versusText.style.display = 'none';
+  } else {
+    winnerContainer.style.display = 'block';
+    loserContainer.style.display = 'block';
+    versusText.style.display = 'block';
+
+    // Gewinner- und Verliererdaten setzen
+    winnerAvatarElement.src = winnerAvatar || '/public/img/default_avatar.png';
+    loserAvatarElement.src = loserAvatar || '/public/img/default_avatar.png';
+    winnerNameElement.textContent = `${winnerName}`;
+    loserNameElement.textContent = `${loserName}`;
+  }
+
+  // Popup anzeigen
+  document.getElementById('spectator-game-end-popup').style.display = 'flex';
+}
+
+
+// Socket.IO Listener erweitern
+socket.on('gameEnd', (data) => {
+  if (!isPlayer) {
+    // Wenn der Benutzer ein Spectator ist
+    showSpectatorGameEndPopup(data);
+  } else {
+    // Spieler sehen das normale Popup
+    showGameEndPopup(data);
+  }
+});
+
+function showGameEndPopup(data) {
+  
+ const statusElement = document.getElementById('status');
+if (statusElement) {
+  statusElement.style.display = 'none';
+}
+ const opoonentTimer = document.getElementById('opponent-timer');
+if (opoonentTimer) {
+  opoonentTimer.style.display = 'none';
+}
+ const playerTimer = document.getElementById('player-timer');
+if (playerTimer) {
+  playerTimer.style.display = 'none';
+}
+  
+  const { winnerId, loserId, winnerEloBefore, winnerEloAfter, loserEloBefore, loserEloAfter, reason } = data;
+  const userId = '<%= user.id %>';
+
+  const popup = document.getElementById('game-end-popup');
+  const playerAvatar = document.getElementById('player-avatar');
+  const playerName = document.getElementById('player-name');
+  const playerElo = document.getElementById('player-elo');
+  const eloBadge = document.getElementById('elo-change');
+  const title = document.getElementById('game-end-title');
+  const message = document.getElementById('game-end-message');
+
+  const playerData = {
+    avatar: '<%= player.avatar %>',
+    name: '<%= player.username %>',
+    elo: <%= player.elo %>,
+  };
+
+  playerAvatar.src = playerData.avatar;
+  playerName.textContent = playerData.name;
+
+  eloBadge.classList.remove('pulse-win', 'pulse-lose');
+  
+  if (reason === 'draw' || reason === 'threefold repetition' || reason === 'insufficient material') {
+    playSound('sound-draw');
+  } else {
+    playSound('sound-checkmate');
+  }
+
+  switch (reason) {
+    case 'checkmate':
+      if (userId === winnerId) {
+        title.textContent = "Victory!";
+        message.textContent = "You won by checkmate!";
+        playerElo.textContent = `ELO: ${winnerEloBefore} ➔ ${winnerEloAfter}`;
+        eloBadge.textContent = `+${winnerEloAfter - winnerEloBefore}`;
+        eloBadge.style.backgroundColor = "#32cd32";
+        eloBadge.classList.add('pulse-win');
+      } else if (userId === loserId) {
+        title.textContent = "Defeat!";
+        message.textContent = "You lost by checkmate.";
+        playerElo.textContent = `ELO: ${loserEloBefore} ➔ ${loserEloAfter}`;
+        eloBadge.textContent = `${loserEloAfter - loserEloBefore}`;
+        eloBadge.style.backgroundColor = "#ff6347";
+        eloBadge.classList.add('pulse-lose');
+      }
+      break;
+      case 'time out':
+      if (userId === winnerId) {
+        title.textContent = "Victory!";
+        message.textContent = "You won on Time!";
+        playerElo.textContent = `ELO: ${winnerEloBefore} ➔ ${winnerEloAfter}`;
+        eloBadge.textContent = `+${winnerEloAfter - winnerEloBefore}`;
+        eloBadge.style.backgroundColor = "#32cd32";
+        eloBadge.classList.add('pulse-win');
+      } else if (userId === loserId) {
+        title.textContent = "Defeat!";
+        message.textContent = "You lost on Time.";
+        playerElo.textContent = `ELO: ${loserEloBefore} ➔ ${loserEloAfter}`;
+        eloBadge.textContent = `${loserEloAfter - loserEloBefore}`;
+        eloBadge.style.backgroundColor = "#ff6347";
+        eloBadge.classList.add('pulse-lose');
+      }
+      break;
+      case 'resign':
+      if (userId === winnerId) {
+        title.textContent = "Victory!";
+        message.textContent = "You won by resign!";
+        playerElo.textContent = `ELO: ${winnerEloBefore} ➔ ${winnerEloAfter}`;
+        eloBadge.textContent = `+${winnerEloAfter - winnerEloBefore}`;
+        eloBadge.style.backgroundColor = "#32cd32";
+        eloBadge.classList.add('pulse-win');
+      } else if (userId === loserId) {
+        title.textContent = "Defeat!";
+        message.textContent = "You lost by resign.";
+        playerElo.textContent = `ELO: ${loserEloBefore} ➔ ${loserEloAfter}`;
+        eloBadge.textContent = `${loserEloAfter - loserEloBefore}`;
+        eloBadge.style.backgroundColor = "#ff6347";
+        eloBadge.classList.add('pulse-lose');
+      }
+      break;
+
+    case 'draw':
+      title.textContent = "Draw!";
+      message.textContent = "The game ended in a draw.";
+      playerElo.textContent = `ELO: ${playerData.elo}`;
+      eloBadge.textContent = "±0";
+      eloBadge.style.backgroundColor = "#aaa";
+      break;
+
+    case 'threefold repetition':
+      title.textContent = "Draw!";
+      message.textContent = "Draw by threefold repetition!";
+      playerElo.textContent = `ELO: ${playerData.elo}`;
+      eloBadge.textContent = "±0";
+      eloBadge.style.backgroundColor = "#aaa";
+      break;
+
+    case 'insufficient material':
+      title.textContent = "Draw!";
+      message.textContent = "Draw by insufficient material!";
+      playerElo.textContent = `ELO: ${playerData.elo}`;
+      eloBadge.textContent = "±0";
+      eloBadge.style.backgroundColor = "#aaa";
+      break;
+
+    case 'disconnect':
+      if (userId === winnerId) {
+        title.textContent = "Victory!";
+        message.textContent = "Your opponent disconnected.";
+        playerElo.textContent = `ELO: ${winnerEloBefore} ➔ ${winnerEloAfter}`;
+        eloBadge.textContent = `+${winnerEloAfter - winnerEloBefore}`;
+        eloBadge.style.backgroundColor = "#32cd32";
+        eloBadge.classList.add('pulse-win');
+      } else {
+        title.textContent = "Defeat!";
+        message.textContent = "You disconnected and lost the game.";
+        playerElo.textContent = `ELO: ${loserEloBefore} ➔ ${loserEloAfter}`;
+        eloBadge.textContent = `${loserEloAfter - loserEloBefore}`;
+        eloBadge.style.backgroundColor = "#ff6347";
+        eloBadge.classList.add('pulse-lose');
+      }
+      break;
+
+    default:
+      title.textContent = "Game Over!";
+      message.textContent = `The game ended due to ${reason}.`;
+      break;
+  }
+
+  popup.style.display = 'flex';
+}
+socket.on('showAdminSpectatorButton', (data) => {
+  let adminButton = document.getElementById('admin-spectator-button');
+
+  // Button ein- oder ausblenden
+  if (data.isAdmin) {
+    adminButton.style.display = 'flex'; // Button einblenden
+    adminButton.style.opacity = 1
+  } else {
+    adminButton.style.display = 'none'; // Button ausblenden
+    adminButton.style.opacity = 0
+  }
+});
+
+
+ socket.on('spectatorCount', (data) => updateSpectatorCount(data));
+
+
+function updateSpectatorCount(data) {
+  if (data.gameId !== gameId) return;
+
+  const spectatorCount = document.getElementById('spectator-count');
+  spectatorCount.textContent = `${data.count} Watching`;
+
+  const spectatorButton = document.getElementById('spectator-button');
+  spectatorButton.style.display = data.count > 0 ? 'flex' : 'none';
+  spectatorButton.style.opacity = data.count > 0 ? '1' : '0';
+}
+
+// Empfang von Timer-Updates
+socket.on('updateTimers', (data) => {
+  const { whiteTime, blackTime, activeColor } = data;
+
+  // Spielerfarbe bestimmen
+  const isWhitePlayer = userColor === 'white';
+
+  // Zuweisung der Zeiten basierend auf der Spielerfarbe
+  const yourTime = isWhitePlayer ? whiteTime : blackTime;
+  const opponentTime = isWhitePlayer ? blackTime : whiteTime;
+
+  // Timer-Elemente aktualisieren
+  document.querySelector('.player-info.bottom .timer').textContent = formatTime(yourTime);
+  document.querySelector('.player-info.top .timer').textContent = formatTime(opponentTime);
+
+  // Aktiven Spieler hervorheben
+  if ((isWhitePlayer && activeColor === 'white') || (!isWhitePlayer && activeColor === 'black')) {
+    document.querySelector('.player-info.bottom .timer').classList.add('active');
+    document.querySelector('.player-info.top .timer').classList.remove('active');
+  } else {
+    document.querySelector('.player-info.bottom .timer').classList.remove('active');
+    document.querySelector('.player-info.top .timer').classList.add('active');
+  }
+});
+
+// Zeit formatieren
+function formatTime(ms) {
+  const minutes = Math.floor(ms / 60000);
+  const seconds = Math.floor((ms % 60000) / 1000);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+}
+
+
+socket.on('disconnect', () => {
+  const gameId = connectedUsers[socket.id];
+  if (!gameId || !gameSpectators[gameId]) return;
+
+  gameSpectators[gameId].delete(socket.id);
+  delete connectedUsers[socket.id];
+  broadcastSpectatorCount(gameId);
+});
+
+/**
+ * Spielt einen Sound ab.
+ * @param {string} soundId - Die ID des Sound-Elements.
+ */
+function playSound(soundId) {
+  const sound = document.getElementById(soundId);
+  if (sound) {
+    sound.currentTime = 0;
+    sound.play().catch((err) => console.error(`Error playing sound: ${soundId}`, err));
+  }
+}
+
+socket.on('updateStatus', (data) => {
+    const statusElement = document.getElementById('status');
+    if (statusElement) {
+      const previousStatus = statusElement.innerHTML; // Save the current status
+      statusElement.innerHTML = data.message;
+      if (data.message.includes('reconnected')) {
+        statusElement.classList.remove('glow');
+        // Restore the previous status after 3 seconds
+        setTimeout(() => {
+          statusElement.innerHTML = previousStatus;
+        }, 3000);
+      } else {
+        statusElement.classList.add('glow');
+      }
+    }
+  });
+  
+  const leaveButton = document.getElementById('leave-btn');
+
+
+  if (leaveButton) {
+    leaveButton.addEventListener('click', () => {
+      window.location.href = 'http://localhost:3000/player';
+    });
+  }
+  
+ document.addEventListener("DOMContentLoaded", () => {
+  const menuButton = document.getElementById("menu-button");
+  const menuPopupOverlay = document.getElementById("menu-popup"); // Korrekte Variable
+  const resignButton = document.getElementById("resign-button");
+  const drawButton = document.getElementById("draw-button");
+  const closePopupButton = document.getElementById("close-popup-button");
+
+  // Menü anzeigen/verstecken
+  menuButton.addEventListener("click", () => {
+    const isVisible = menuPopupOverlay.style.display === "flex";
+    menuPopupOverlay.style.display = isVisible ? "none" : "flex"; // Konsistenz zwischen "flex" und "none"
+  });
+
+  // Close-Button: Schließt das Popup
+  closePopupButton.addEventListener("click", () => {
+    menuPopupOverlay.style.display = "none";
+  });
+
+  // Klick außerhalb des Popups schließt es
+  menuPopupOverlay.addEventListener("click", (event) => {
+    if (event.target === menuPopupOverlay) {
+      menuPopupOverlay.style.display = "none";
+    }
+  });
+
+  // Resign-Button: SweetAlert2 zur Bestätigung
+  resignButton.addEventListener("click", () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to resign?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ff253a",
+      cancelButtonColor: "#5865f2",
+      confirmButtonText: "Yes, resign",
+      background: "#2c2c2c",
+      color: "#fff",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        socket.emit("gameEnd", { gameId, winnerColor: userColor === "white" ? "black" : "white", reason: "resign" });
+      }
+    });
+    menuPopupOverlay.style.display = "none";
+  });
+
+ // Draw-Button: Bietet ein Remis an
+drawButton.addEventListener("click", () => {
+  socket.emit("offerDraw", { gameId });
+  notyf.success("Your draw offer has been sent to your opponent!");
+  menuPopupOverlay.style.display = "none";
+});
+
+socket.on("offerDraw", (data) => {
+  if (data.from === socket.id) return; // Blockiere die Anzeige für den Absender
+
+playSound('sound-popup');
+  Swal.fire({
+    title: "Your opponent wants a draw!",
+    text: "Do you accept the draw?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#585af2",
+    cancelButtonColor: "#ff253a",
+    confirmButtonText: "Accept Draw",
+    cancelButtonText: "Decline",
+    background: "#0c0e13",
+    color: "#fff",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      socket.emit("drawResponse", { gameId, accepted: true });
+    } else {
+      socket.emit("drawResponse", { gameId, accepted: false });
+    }
+  });
+});
+
+ const notyf = new Notyf({
+  duration: 5000, // Toast verschwindet nach 3 Sekunden
+  position: { x: 'right', y: 'bottom' }, // Unten rechts anzeigen
+});
+
+socket.on("drawDeclined", (data) => {
+  const userId = '<%= user.id %>'; // ID des aktuellen Spielers
+
+  if (data.to === userId) {
+    // Empfänger der Ablehnung (Angebotender Spieler)
+    notyf.error("Your draw offer was declined by your opponent.");
+  } else if (data.from === userId) {
+    // Absender der Ablehnung
+    notyf.success("You declined your opponent's draw offer.");
+  }
+});
+
+
+});
+  </script>
+     <script>
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+
+</script>
+</body>
+</html>

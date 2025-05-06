@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chessy.gg | Your choice</title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/public/styles/header.css">
+  <link rel="stylesheet" href="/public/styles/styles.css">
+  <link rel="stylesheet" href="/public/styles/select-platform.css">
+  <link rel="stylesheet" href="/public/styles/dash-footer.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+     <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+  </nav>
+  </div>
+  <div class="navbar-right">
+     <% if (user) { %>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+      </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+    <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+    <a href="/public-servers" class="menu-link">Public Servers</a>
+    <a href="/help" class="menu-link">Help</a>
+    <a href="/status" class="menu-link">Status</a>
+      <div class="menu-buttons">
+        <% if (user) { %>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="top-banner" id="topBanner">
+  <p>Support Chessy and keep the game alive! <a href="/support-chessy" style="color: #5865f2; text-decoration: underline;">Read more</a></p>
+  <button onclick="closeBanner()" aria-label="Close banner">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
+<div class="container">
+  <% if (user) { %>
+  <div class="welcome">
+    <div class="user-info">
+      <img src="<%= discordAvatar %>" alt="Avatar" class="user-avatar" />
+    </div>
+    <div class="username-info">
+      <h2>
+        <span class="username-upper"><%= discordUsername.charAt(0).toUpperCase() + discordUsername.slice(1) %></span><br />
+        <span class="at-symbol">@<%= discordUsername %></span>
+      </h2>
+    </div>
+  </div>
+
+  <div class="role-selection">
+      <a href="/your-servers" class="role-container">
+        <i class="fas fa-server"></i>
+        <h3>Server Owner</h3>
+      </a>
+      <a href="/player" class="role-container">
+        <i class="fas fa-chess"></i>
+        <h3>Player</h3>
+      </a>
+  </div>
+
+  <% } else { %>
+    <h1>Willkommen bei Chessy!</h1>
+    <p>Logge dich ein, um deine Server zu verwalten.</p>
+  <% } %>
+</div>
+  
+   <footer class="footer">
+    <p>© 2024 Chessy.gg | Built with passion for chess players everywhere. <a href="/privacy">Privacy Policy</a></p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  
+   <script>
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+
+  const notyf = new Notyf({
+  duration: 5000, // Toast verschwindet nach 3 Sekunden
+  position: { x: 'right', y: 'bottom' }, // Unten rechts anzeigen
+});
+
+
+function showWelcomeMessage() {
+    notyf.success('Welcome! <%= discordUsername.charAt(0).toUpperCase() + discordUsername.slice(1) %>');
+}
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  if (urlParams.has('welcome')) {
+    showWelcomeMessage();
+  }
+});
+
+function closeBanner() {
+  const banner = document.getElementById('topBanner');
+  banner.style.transition = 'opacity 0.5s ease';
+  banner.style.opacity = '0';
+  setTimeout(() => {
+    banner.style.display = 'none';
+  }, 500);
+}
+</script>
+</body>
+</html>

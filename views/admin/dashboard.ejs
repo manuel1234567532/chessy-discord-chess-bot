@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Chessy</title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/public/styles/styles.css">
+  <link rel="stylesheet" href="/public/styles/header.css">
+  <link rel="stylesheet" href="/public/styles/admin.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+     <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+    <a href="/admin/dashboard" class="menu-link">Analytics/Player</a>
+    <a href="/admin/games" class="menu-link">Active Matches</a>
+  </nav>
+  </div>
+  <div class="navbar-right">
+     <% if (user) { %>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+      </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+    <a href="/admin/dashboard" class="menu-link">Analytics/Player</a>
+    <a href="/admin/games" class="menu-link">Active Matches</a>
+      <div class="menu-buttons">
+        <% if (user) { %>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="layout-container">
+  <div class="analytics-content">
+    <h2>Analytics Dashboard</h2>
+    <div class="analytics-cards">
+      <div class="analytics-card">
+        <h3>Total Servers</h3>
+        <p><%= totalServers %></p>
+      </div>
+      <div class="analytics-card">
+        <h3>Live Chess Matches</h3>
+        <p><%= liveGames %></p>
+      </div>
+      <div class="analytics-card">
+        <h3>Total Matches Played</h3>
+        <p><%= totalGames %></p>
+      </div>
+      <div class="analytics-card">
+        <h3>Total Players</h3>
+        <p><%= totalPlayers %></p>
+      </div>
+    </div>
+  </div>
+  
+<div class="table-container">
+  <h2>All Players</h2>
+
+  <!-- Dropdown für Einträge pro Seite -->
+  <div class="entries-control">
+    <label for="entriesPerPage">Entries per page:</label>
+    <select id="entriesPerPage" onchange="updateEntriesPerPage()">
+      <option value="5" <%= entriesPerPage === 5 ? 'selected' : '' %>>5</option>
+      <option value="10" <%= entriesPerPage === 10 ? 'selected' : '' %>>10</option>
+      <option value="20" <%= entriesPerPage === 20 ? 'selected' : '' %>>20</option>
+    </select>
+  </div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Discord ID</th>
+      <th>ELO</th>
+      <th>Games Played</th>
+      <th>Wins</th>
+      <th>Type</th> <!-- Neue Spalte für Type -->
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% players.forEach(player => { %>
+      <tr>
+        <td><%= player.username %></td>
+        <td><%= player.discordId %></td>
+        <td><%= player.elo %></td>
+        <td><%= player.gamesPlayed %></td>
+        <td><%= player.wins %></td>
+         <td>
+          <% if (player.type === 'player') { %>
+            <span class="badge badge-player">Player</span>
+          <% } else if (player.type === 'admin') { %>
+            <span class="badge badge-admin">Admin</span>
+          <% } else if (player.type === 'team') { %>
+            <span class="badge badge-team">Team</span>
+          <% } %>
+        </td>
+        <td>
+          <% if (player.status === 'active') { %>
+            <span class="badge badge-active">Active</span>
+          <% } else if (player.status === 'timed out') { %>
+            <span class="badge badge-timed-out">Timed Out</span>
+          <% } else if (player.status === 'banned') { %>
+            <span class="badge badge-banned">Banned</span>
+          <% } %>
+        </td>
+        <td>
+          <i class="fas fa-edit edit-icon" onclick="editPlayer('<%= player.discordId %>')"></i>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <% for (let i = 1; i <= totalPages; i++) { %>
+      <a href="?page=<%= i %>&entriesPerPage=<%= entriesPerPage %>"
+         class="pagination-link <%= currentPage === i ? 'active' : '' %>">
+        <%= i %>
+      </a>
+    <% } %>
+  </div>
+</div>
+</div>
+
+<div id="editModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <h2>Edit Player</h2>
+    <form id="editPlayerForm">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="discordId">Discord ID:</label>
+        <input type="text" id="discordId" name="discordId" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="elo">ELO:</label>
+        <input type="number" id="elo" name="elo">
+      </div>
+
+      <div class="form-group">
+        <label for="gamesPlayed">Games Played:</label>
+        <input type="text" id="gamesPlayed" name="gamesPlayed" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="wins">Wins:</label>
+        <input type="text" id="wins" name="wins" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+          <option value="active">Active</option>
+          <option value="timed out">Timed Out</option>
+          <option value="banned">Banned</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="timeOut">Time Out:</label>
+        <input type="datetime-local" id="timeOut" name="timeOut">
+      </div>
+
+      <div class="form-group">
+        <label for="reason">Reason:</label>
+        <textarea id="reason" name="reason"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="supporter">Supporter:</label>
+        <select id="supporter" name="supporter">
+          <option value="no">No</option>
+          <option value="tier 1">Tier 1</option>
+          <option value="tier 2">Tier 2</option>
+          <option value="tier 3">Tier 3</option>
+        </select>
+      </div>
+
+      <button type="submit">Save</button>
+    </form>
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+<script>
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+
+ // Übergibt die players-Daten an die Client-Seite
+  const players = <%- JSON.stringify(players) %>;
+
+function editPlayer(discordId) {
+  const player = players.find(p => p.discordId === discordId); // Spieler aus der Liste finden
+
+  if (!player) {
+    alert('Player not found');
+    return;
+  }
+
+  // Felder mit den Daten des Spielers befüllen
+  document.getElementById('username').value = player.username;
+  document.getElementById('discordId').value = player.discordId;
+  document.getElementById('elo').value = player.elo;
+  document.getElementById('gamesPlayed').value = player.gamesPlayed;
+  document.getElementById('wins').value = player.wins;
+
+  // Status und Supporter-Werte setzen
+  document.getElementById('status').value = player.status || 'active'; // Standardwert: 'active'
+  document.getElementById('supporter').value = player.supporter || 'no'; // Standardwert: 'no'
+
+  if (player.timeOut) {
+    const timeOutDate = new Date(player.timeOut);
+    const formattedTimeOut = timeOutDate.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:mm
+    document.getElementById('timeOut').value = formattedTimeOut;
+  } else {
+    document.getElementById('timeOut').value = ''; // Leeren, falls kein Datum gesetzt ist
+  }
+  
+  document.getElementById('reason').value = player.reason || '';
+
+  // Modal anzeigen
+  document.getElementById('editModal').style.display = 'flex';
+}
+
+
+  // Funktion, um das Modal zu schließen
+  function closeModal() {
+    document.getElementById('editModal').style.display = 'none';
+  }
+
+  // Funktion zum Aktualisieren der Spieler-Einträge pro Seite
+  function updateEntriesPerPage() {
+    const entriesPerPage = document.getElementById('entriesPerPage').value;
+    const url = new URL(window.location.href);
+    url.searchParams.set('entriesPerPage', entriesPerPage);
+    url.searchParams.set('page', 1); // Zurück zur ersten Seite
+    window.location.href = url.toString();
+  }
+
+  // Funktion zum Aktualisieren der Analytics-Daten
+  function updateAnalytics() {
+    fetch('/api/get-stats')
+      .then(response => response.json())
+      .then(data => {
+        document.querySelector('.analytics-card:nth-child(1) p').textContent = data.totalServers;
+        document.querySelector('.analytics-card:nth-child(2) p').textContent = data.liveGames;
+        document.querySelector('.analytics-card:nth-child(3) p').textContent = data.totalGames;
+        document.querySelector('.analytics-card:nth-child(4) p').textContent = data.totalPlayers;
+      })
+      .catch(error => console.error('Fehler beim Aktualisieren der Analytics:', error));
+  }
+
+// Initialisiere Notyf
+const notyf = new Notyf({
+  duration: 5000, // Toast verschwindet nach 5 Sekunden
+  position: { x: 'right', y: 'bottom' }, // Unten rechts anzeigen
+});
+
+document.getElementById('editPlayerForm').addEventListener('submit', function (event) {
+  event.preventDefault(); // Verhindert die Standardaktion
+
+  const status = document.getElementById('status').value;
+  const timeOutField = document.getElementById('timeOut');
+  const reasonField = document.getElementById('reason');
+
+  // Falls der Status auf "Active" gesetzt wird, leere die Felder
+  if (status === 'active') {
+    timeOutField.value = ''; // Leert das Time Out Feld
+    reasonField.value = ''; // Leert das Reason Feld
+  }
+  
+   if (status === 'banned') {
+    timeOutField.value = ''; // Leert das Time Out Feld
+  }
+
+  // Validierung: Status 'timed out' erfordert Time Out Datum und Grund
+  if (status === 'timed out') {
+    if (!timeOutField.value) {
+      notyf.error('You must set a Time Out date when changing the status to "Timed Out".');
+      return;
+    }
+
+    const timeOutDate = new Date(timeOutField.value);
+    const now = new Date();
+    if (timeOutDate < now) {
+      notyf.error('The Time Out date cannot be in the past.');
+      return;
+    }
+
+    if (!reasonField.value.trim()) {
+      notyf.error('You must provide a reason for setting the status to "Timed Out".');
+      return;
+    }
+  }
+
+  // Validierung: Status 'banned' erfordert einen Grund
+  if (status === 'banned' && !reasonField.value.trim()) {
+    notyf.error('You must provide a reason for banning the player.');
+    return;
+  }
+
+  // Daten aus dem Formular sammeln
+  const data = new FormData(event.target);
+
+  // Anfrage an das Backend senden
+  fetch(`/api/edit-player`, {
+    method: 'POST',
+    body: JSON.stringify(Object.fromEntries(data)),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        notyf.success('Player updated successfully!');
+        location.reload(); // Seite neu laden, um die Änderungen zu sehen
+      } else {
+        notyf.error('Error updating player: ' + data.message);
+      }
+    })
+    .catch(err => {
+      console.error('Error:', err);
+      notyf.error('An unexpected error occurred.');
+    });
+});
+
+
+
+  // Aktualisiere Analytics alle 10 Sekunden
+  setInterval(updateAnalytics, 10000);
+
+  // Initiales Update der Analytics-Daten
+  updateAnalytics();
+</script>
+</body>
+</html>

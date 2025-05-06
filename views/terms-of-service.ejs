@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of service - Chessy.gg</title>
+  <link rel="icon" href="/public/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/public/styles/styles.css">
+  <link rel="stylesheet" href="/public/styles/help.css">
+  <link rel="stylesheet" href="/public/styles/header-landing.css">
+  <link rel="stylesheet" href="/public/styles/footer-landing.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="navbar-left">
+    <a href="/" class="logo-link">
+      <h1>Chessy.gg</h1>
+    </a>
+      <nav class="desktop-menu">
+        <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+        <a href="/public-servers" class="menu-link">Public Servers</a>
+        <a href="/help" class="menu-link">Help</a>
+        <a href="/status" class="menu-link">Status</a>
+      </nav>
+  </div>
+  <div class="navbar-right">
+    <% if (!user) { %>
+    <a href="/add-server" class="add-server-btn">
+      <i class="fas fa-tachometer-alt"></i> Add to Server
+    </a>
+    <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Log in with Discord
+    </a>
+     <% } %>
+     <% if (user) { %>
+     <a href="/select-platform" class="dashboard-btn">
+      <i class="fab fa-discord"></i> Dashboard
+    </a>
+     <a href="/logout" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+     <% } %>
+  </div>
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <nav class="mobile-menu">
+    <div class="menu-content">
+      <a href="https://discord.gg/JRMgXxNw8Q" class="menu-link" target="_blank" rel="noopener noreferrer">Our Discord</a>
+      <a href="/public-servers" class="menu-link">Public Servers</a>
+      <a href="/help" class="menu-link">Help</a>
+      <a href="/status" class="menu-link">Status</a>
+      <div class="menu-buttons">
+      <% if (!user) { %>
+        <a href="/add-server" class="add-server-mobile">
+          <i class="fas fa-tachometer-alt"></i> Add to Server
+        </a>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Log in with Discord
+        </a>
+        <% } %>
+        <% if (user) { %>
+        <a href="/select-platform" class="dashboard-mobile">
+          <i class="fab fa-discord"></i> Dashboard
+        </a>
+        <a href="/logout" class="logout-mobile">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="container">
+  <section class="hero">
+    <h1>Terms of Service</h1>
+    <p>Please read these terms carefully before using Chessy.gg.</p>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">1. Acceptance of Terms</h2>
+    <p>By accessing or using Chessy.gg, you agree to be bound by these Terms of Service and our Privacy Policy. If you disagree with any part of the terms, you may not access the service.</p>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">2. Service Description</h2>
+    <p>Chessy.gg provides tools and features for playing and managing chess games on Discord servers. We reserve the right to modify or discontinue the service at any time without prior notice.</p>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">3. User Responsibilities</h2>
+    <ul>
+      <li>You must ensure that your use of Chessy.gg complies with all applicable laws and regulations.</li>
+      <li>You are responsible for maintaining the confidentiality of your Discord account credentials.</li>
+      <li>You agree not to misuse the service, including but not limited to spamming, cheating, or exploiting bugs.</li>
+    </ul>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">4. Limitation of Liability</h2>
+    <p>Chessy.gg is provided "as is" without any warranties. We are not liable for any damages arising from the use or inability to use the service.</p>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">5. Termination</h2>
+    <p>We reserve the right to suspend or terminate your access to Chessy.gg for any reason, including but not limited to violations of these terms.</p>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">6. Changes to Terms</h2>
+    <p>We may update these terms from time to time. Continued use of the service constitutes your acceptance of the revised terms.</p>
+  </section>
+
+  <section class="content-section">
+    <h2 class="section-title">7. Contact Us</h2>
+    <p>If you have any questions about these Terms of Service, please contact us at <a href="mailto:support@chessy.gg" class="highlight">support@chessy.gg</a>.</p>
+  </section>
+</div>
+  <footer class="footer">
+    <p>© 2024 Chessy.gg | Built with passion for chess players everywhere. <a href="/privacy">Privacy Policy</a></p>
+  </footer>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+  
+<script>
+function toggleMenu() {
+  const menu = document.querySelector('.mobile-menu');
+  menu.classList.toggle('show');
+}
+</script>
+</body>
+</html>

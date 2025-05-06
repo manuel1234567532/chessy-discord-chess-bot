@@ -1,0 +1,150 @@
+[2024-12-21T19:42:23.327Z] TypeError: Cannot read properties of undefined (reading 'query')
+    at updateBotStatus (/home/container/dashboard.js:51:6)
+    at Client.<anonymous> (/home/container/dashboard.js:76:5)
+    at Object.onceWrapper (node:events:634:26)
+    at Client.emit (node:events:519:28)
+    at WebSocketManager.triggerClientReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:381:17)
+    at WebSocketManager.checkShardsReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:364:10)
+    at WebSocketShard.<anonymous> (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:194:16)
+    at WebSocketShard.emit (node:events:519:28)
+    at WebSocketShard.checkReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketShard.js:184:12)
+    at WebSocketShard.gotGuild (/home/container/node_modules/discord.js/src/client/websocket/WebSocketShard.js:158:10)
+[2024-12-21T19:44:02.415Z] TypeError: db.query is not a function
+    at updateBotStatus (/home/container/dashboard.js:51:6)
+    at Client.<anonymous> (/home/container/dashboard.js:76:5)
+    at Object.onceWrapper (node:events:634:26)
+    at Client.emit (node:events:519:28)
+    at WebSocketManager.triggerClientReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:381:17)
+    at WebSocketManager.checkShardsReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:364:10)
+    at WebSocketShard.<anonymous> (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:194:16)
+    at WebSocketShard.emit (node:events:519:28)
+    at WebSocketShard.checkReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketShard.js:184:12)
+    at WebSocketShard.gotGuild (/home/container/node_modules/discord.js/src/client/websocket/WebSocketShard.js:158:10)
+[2024-12-22T17:47:15.339Z] TypeError: val.toString is not a function
+    at Object.escape (/home/container/node_modules/sqlstring/lib/SqlString.js:52:33)
+    at Object.objectToValues (/home/container/node_modules/sqlstring/lib/SqlString.js:180:89)
+    at Object.escape (/home/container/node_modules/sqlstring/lib/SqlString.js:54:26)
+    at Object.format (/home/container/node_modules/sqlstring/lib/SqlString.js:100:19)
+    at PoolConnection.format (/home/container/node_modules/mysql2/lib/base/connection.js:521:22)
+    at PoolConnection.query (/home/container/node_modules/mysql2/lib/base/connection.js:566:25)
+    at /home/container/node_modules/mysql2/lib/base/pool.js:149:14
+    at /home/container/node_modules/mysql2/lib/base/pool.js:43:37
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+[2024-12-22T20:15:32.243Z] ReferenceError: /home/container/views/verify.ejs:112
+    110|   </div>
+    111|   <div class="navbar-right">
+ >> 112|     <% if (!user) { %>
+    113|     <a href="/add-server" class="add-server-btn">
+    114|       <i class="fas fa-tachometer-alt"></i> Add to Server
+    115|     </a>
+
+user is not defined
+    at eval ("/home/container/views/verify.ejs":12:8)
+    at verify (/home/container/node_modules/ejs/lib/ejs.js:703:17)
+    at /home/container/node_modules/ejs/lib/ejs.js:260:40
+    at new Promise (<anonymous>)
+    at tryHandleCache (/home/container/node_modules/ejs/lib/ejs.js:258:14)
+    at exports.renderFile [as engine] (/home/container/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/home/container/node_modules/express/lib/view.js:135:8)
+    at tryRender (/home/container/node_modules/express/lib/application.js:657:10)
+    at Function.render (/home/container/node_modules/express/lib/application.js:609:3)
+    at ServerResponse.render (/home/container/node_modules/express/lib/response.js:1049:7)
+[2024-12-22T22:13:38.320Z] TypeError: val.toString is not a function
+    at Object.escape (/home/container/node_modules/sqlstring/lib/SqlString.js:52:33)
+    at Object.objectToValues (/home/container/node_modules/sqlstring/lib/SqlString.js:180:89)
+    at Object.escape (/home/container/node_modules/sqlstring/lib/SqlString.js:54:26)
+    at Object.format (/home/container/node_modules/sqlstring/lib/SqlString.js:100:19)
+    at PoolConnection.format (/home/container/node_modules/mysql2/lib/base/connection.js:521:22)
+    at PoolConnection.query (/home/container/node_modules/mysql2/lib/base/connection.js:566:25)
+    at /home/container/node_modules/mysql2/lib/base/pool.js:149:14
+    at /home/container/node_modules/mysql2/lib/base/pool.js:43:37
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+[2024-12-22T22:13:45.474Z] TypeError: val.toString is not a function
+    at Object.escape (/home/container/node_modules/sqlstring/lib/SqlString.js:52:33)
+    at Object.objectToValues (/home/container/node_modules/sqlstring/lib/SqlString.js:180:89)
+    at Object.escape (/home/container/node_modules/sqlstring/lib/SqlString.js:54:26)
+    at Object.format (/home/container/node_modules/sqlstring/lib/SqlString.js:100:19)
+    at PoolConnection.format (/home/container/node_modules/mysql2/lib/base/connection.js:521:22)
+    at PoolConnection.query (/home/container/node_modules/mysql2/lib/base/connection.js:566:25)
+    at /home/container/node_modules/mysql2/lib/base/pool.js:149:14
+    at /home/container/node_modules/mysql2/lib/base/pool.js:43:37
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+[2024-12-24T14:39:04.088Z] ReferenceError: SlashCommandBuilder is not defined
+    at Client.<anonymous> (/home/container/dashboard.js:90:9)
+    at Object.onceWrapper (node:events:634:26)
+    at Client.emit (node:events:519:28)
+    at WebSocketManager.triggerClientReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:381:17)
+    at WebSocketManager.checkShardsReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:364:10)
+    at WebSocketShard.<anonymous> (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:194:16)
+    at WebSocketShard.emit (node:events:519:28)
+    at WebSocketShard.checkReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketShard.js:184:12)
+    at WebSocketShard.gotGuild (/home/container/node_modules/discord.js/src/client/websocket/WebSocketShard.js:158:10)
+    at WebSocketManager.<anonymous> (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:234:15)
+[2024-12-24T15:45:58.075Z] ReferenceError: await is not defined
+    at Query.onResult (/home/container/dashboard.js:198:43)
+    at /home/container/node_modules/mysql2/lib/commands/query.js:90:16
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+[2024-12-24T15:53:21.137Z] DiscordAPIError[40060]: Interaction has already been acknowledged.
+    at handleErrors (/home/container/node_modules/@discordjs/rest/dist/index.js:727:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async BurstHandler.runRequest (/home/container/node_modules/@discordjs/rest/dist/index.js:831:23)
+    at async _REST.request (/home/container/node_modules/@discordjs/rest/dist/index.js:1272:22)
+    at async ButtonInteraction.reply (/home/container/node_modules/discord.js/src/structures/interfaces/InteractionResponses.js:115:5)
+[2024-12-24T15:54:39.606Z] DiscordAPIError[40060]: Interaction has already been acknowledged.
+    at handleErrors (/home/container/node_modules/@discordjs/rest/dist/index.js:727:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async BurstHandler.runRequest (/home/container/node_modules/@discordjs/rest/dist/index.js:831:23)
+    at async _REST.request (/home/container/node_modules/@discordjs/rest/dist/index.js:1272:22)
+    at async ButtonInteraction.reply (/home/container/node_modules/discord.js/src/structures/interfaces/InteractionResponses.js:115:5)
+[2024-12-24T15:56:46.758Z] DiscordAPIError[40060]: Interaction has already been acknowledged.
+    at handleErrors (/home/container/node_modules/@discordjs/rest/dist/index.js:727:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async BurstHandler.runRequest (/home/container/node_modules/@discordjs/rest/dist/index.js:831:23)
+    at async _REST.request (/home/container/node_modules/@discordjs/rest/dist/index.js:1272:22)
+    at async ButtonInteraction.reply (/home/container/node_modules/discord.js/src/structures/interfaces/InteractionResponses.js:115:5)
+[2024-12-25T23:21:14.092Z] ReferenceError: router is not defined
+    at Object.<anonymous> (/home/container/dashboard.js:677:1)
+    at Module._compile (node:internal/modules/cjs/loader:1368:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1426:10)
+    at Module.load (node:internal/modules/cjs/loader:1205:32)
+    at Module._load (node:internal/modules/cjs/loader:1021:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:142:12)
+    at node:internal/main/run_main_module:28:49
+[2024-12-25T23:21:14.652Z] ReferenceError: Cannot access 'scheduleDailyLeaderboardUpdate' before initialization
+    at Client.<anonymous> (/home/container/dashboard.js:80:3)
+    at Object.onceWrapper (node:events:634:26)
+    at Client.emit (node:events:519:28)
+    at WebSocketManager.triggerClientReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:381:17)
+    at WebSocketManager.checkShardsReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:364:10)
+    at WebSocketShard.<anonymous> (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:194:16)
+    at WebSocketShard.emit (node:events:519:28)
+    at WebSocketShard.checkReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketShard.js:184:12)
+    at WebSocketShard.gotGuild (/home/container/node_modules/discord.js/src/client/websocket/WebSocketShard.js:158:10)
+    at WebSocketManager.<anonymous> (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:234:15)
+[2024-12-25T23:21:48.209Z] ReferenceError: router is not defined
+    at Object.<anonymous> (/home/container/dashboard.js:677:1)
+    at Module._compile (node:internal/modules/cjs/loader:1368:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1426:10)
+    at Module.load (node:internal/modules/cjs/loader:1205:32)
+    at Module._load (node:internal/modules/cjs/loader:1021:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:142:12)
+    at node:internal/main/run_main_module:28:49
+[2024-12-25T23:21:48.790Z] ReferenceError: Cannot access 'scheduleDailyLeaderboardUpdate' before initialization
+    at Client.<anonymous> (/home/container/dashboard.js:80:3)
+    at Object.onceWrapper (node:events:634:26)
+    at Client.emit (node:events:519:28)
+    at WebSocketManager.triggerClientReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:381:17)
+    at WebSocketManager.checkShardsReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:364:10)
+    at WebSocketShard.<anonymous> (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:194:16)
+    at WebSocketShard.emit (node:events:519:28)
+    at WebSocketShard.checkReady (/home/container/node_modules/discord.js/src/client/websocket/WebSocketShard.js:184:12)
+    at WebSocketShard.gotGuild (/home/container/node_modules/discord.js/src/client/websocket/WebSocketShard.js:158:10)
+    at WebSocketManager.<anonymous> (/home/container/node_modules/discord.js/src/client/websocket/WebSocketManager.js:234:15)
+[2024-12-26T12:05:38.916Z] Error: You have tried to call .then(), .catch(), or invoked await on the result of query that is not a promise, which is a programming error. Try calling con.promise().query(), or require('mysql2/promise') instead of 'mysql2' for a promise-compatible version of the query interface. To learn how to use async/await or Promises check out documentation at https://sidorares.github.io/node-mysql2/docs#using-promise-wrapper, or the mysql2 documentation at https://sidorares.github.io/node-mysql2/docs/documentation/promise-wrapper
+    at Query.then (/home/container/node_modules/mysql2/lib/commands/query.js:43:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[2024-12-26T14:28:43.004Z] Error: Field 'guild_id' doesn't have a default value
+    at PromisePool.query (/home/container/node_modules/mysql2/lib/promise/pool.js:36:22)
+    at handleAccept (/home/container/dashboard.js:399:22)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Client.<anonymous> (/home/container/dashboard.js:223:7)

@@ -1,0 +1,451 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #eaeaea;
+      margin: 0;
+      background: linear-gradient(135deg, #0c0e13, #0d0d0d);
+    }
+.discord-btn {
+        display: inline-block;
+        padding: 15px 40px;
+        color: #fff;
+        background-color: #5865F2; /* Discord's primary brand color */
+        border-radius: 8px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        text-transform: uppercase;
+        text-decoration: none;
+        letter-spacing: 1px;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 4px 10px rgba(88, 101, 242, 0.5);
+    }
+
+    .discord-btn:hover {
+        background-color: #4752C4; /* Slightly darker shade for hover */
+        box-shadow: 0 6px 15px rgba(88, 101, 242, 0.7);
+        transform: translateY(-3px);
+    }
+
+    .discord-btn i {
+        margin-right: 10px;
+        font-size: 20px;
+        vertical-align: middle;
+    }
+
+.hero {
+  display: flex;
+  align-items: center; /* Zentriert vertikal */
+  justify-content: center; /* Zentriert horizontal */
+  padding: 100px 20px;
+  gap: 40px; /* Reduzierter Abstand */
+}
+
+.hero-text {
+  flex: 1;
+  max-width: 40%; /* Text und Foto nehmen weniger Breite ein */
+  text-align: left; /* Für eine klare Ausrichtung */
+}
+
+.hero-image {
+  flex: 1;
+  max-width: 35%; /* Reduziert die Breite, um näher an der Mitte zu sein */
+  display: flex;
+  justify-content: center; /* Bild zentriert innerhalb des Containers */
+  align-items: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column; /* Auf kleineren Geräten untereinander */
+    text-align: center;
+  }
+
+      .hero-text, .hero-image {
+        max-width: 100%;
+        /* align-items: center; */
+        text-align: center;
+    }
+}
+
+    .hero h1 {
+      font-size: 55px;
+      font-weight: 700;
+      color: #5865f2;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: #eaeaea;
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+
+    .hero a {
+    text-decoration: none;
+    color: #fffdfd;
+    padding: 15px 35px;
+    background: linear-gradient(90deg, #5865f2, #5865f2);
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 16px;
+    letter-spacing: 1px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 15px rgb(88 101 242), 0 0 30px rgb(88 101 242);
+}
+
+    .hero a:hover {
+      background: linear-gradient(90deg, #3a4297, #5865f2);
+      box-shadow: 0 0 15px rgb(61 68 144), 0 0 30px rgb(88 101 242);
+      transform: translateY(-3px);
+    }
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+    .feature {
+      background: linear-gradient(58deg, #5865f238, #0707088a);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .feature:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .feature i {
+      font-size: 50px;
+      color: #00ff99;
+      margin-bottom: 20px;
+    }
+
+    .feature h3 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #eaeaea;
+      margin-bottom: 15px;
+    }
+
+    .feature p {
+      font-size: 16px;
+      color: #cfcfcf;
+      font-weight: 400;
+    }
+    
+   .highlight-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 20px;
+    color: #eaeaea;
+  }
+
+.highlight-section-main {
+  max-width: 1200px; /* Breite einschränken */
+  margin: 0 auto; /* Zentriert die Sektion */
+  border-radius: 20px; /* Abgerundete Ecken */
+  overflow: hidden; /* Für saubere Abrundungen bei Kind-Elementen */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Optionaler Schatteneffekt */
+  background: linear-gradient(301deg, #5865f238, #0707088a);
+}
+
+.highlight-section {
+  padding: 40px 20px; /* Etwas Innenabstand */
+}
+
+  .highlight-container {
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  }
+
+  .highlight-content {
+
+    max-width: 500px;
+    text-align: center;
+  }
+
+  .highlight-gif-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .highlight-gif {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  }
+
+  .highlight-content h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #5865f2;
+    margin-bottom: 20px;
+  }
+
+  .highlight-content p {
+    font-size: 18px;
+    color: #cfcfcf;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .highlight-content .discord-btn {
+    margin-top: 20px;
+  }
+
+@media (min-width: 768px) {
+                .typed-container h1 {
+          text-align: center;
+      }
+}
+
+.text-content {
+  order: 0; /* Text bleibt an erster oder zweiter Stelle je nach HTML */
+}
+
+.image-content {
+  order: 0; /* Bild bleibt an erster oder zweiter Stelle je nach HTML */
+}
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+  .highlight-container {
+    flex-direction: column; /* Inhalte untereinander anordnen */
+  }
+
+  .text-content {
+    order: 1; /* Text immer zuerst */
+  }
+
+  .image-content {
+    order: 2; /* Bild immer danach */
+  }
+      
+    .highlight-content h2 {
+      font-size: 28px;
+    }
+
+    .highlight-content p {
+      font-size: 16px;
+    }
+
+    .highlight-gif {
+      max-width: 300px;
+        order: 2;
+    }
+            .typed-container h1 {
+         margin-top: -70px;
+         min-height: 250px;
+          text-align: center;
+      }
+      
+     .typed-container {
+         justify-content: center;
+      }
+      
+      .tilt
+      {
+          display: none;
+      }
+      
+      .swiper-container {
+          display: none;
+      }
+     
+  }
+
+  @media (max-width: 480px) {
+    .highlight-content h2 {
+      font-size: 24px;
+    }
+
+    .highlight-content p {
+      font-size: 14px;
+    }
+
+    .highlight-gif {
+      max-width: 250px;
+    }
+
+    .discord-btn {
+      padding: 12px 30px;
+      font-size: 14px;
+    }
+      
+      .swiper-container {
+          display: none;
+      }
+      
+  }
+.tilt {
+    width: 417px;
+    height: 471px;
+    position: relative;
+    transform-style: preserve-3d; /* Aktiviert 3D-Transformationsmodus */
+}
+
+.bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 417px;
+    height: 471px;
+    background-image: url('/public/img/pv1_bg.png'); /* Ersetze durch den Pfad deines Hintergrundbilds */
+    background-size: cover;
+    background-position: center;
+    transform: translateZ(-30px); /* Hintergrund optisch nach hinten setzen */
+}
+
+.foreground {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250px; /* Passe die Größe des Vordergrundbilds an */
+    height: auto;
+    transform: translate(-50%, -50%) translateZ(20px); /* Zentriert und nach vorne verschoben */
+}
+
+.typed-container {
+  display: flex;
+  align-items: left; /* Zentriere den Text vertikal */
+  width: 100%; /* Container nimmt volle Breite ein */
+  min-height: 70px; /* Genug Platz für den Text */
+}
+
+.typed-container h1 {
+  font-size: 55px; /* Desktop-Schriftgröße */
+  font-weight: 700;
+  color: #5865f2;
+  margin: 0;/
+}
+
+.swiper-slide img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+.swiper-container {
+  position: relative;
+  max-width: 80%; /* Optional: Setze die maximale Breite des Containers */
+  margin: 0 auto; /* Zentriere den Container */
+  overflow: hidden;
+}
+
+.swiper-container h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #5865f2;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #ffffff4f;
+  transition: background-color 0.3s ease;
+}
+
+.swiper-button-prev {
+  left: 10px; /* Abstand zum linken Rand des Containers */
+}
+
+.swiper-button-next {
+  right: 10px; /* Abstand zum rechten Rand des Containers */
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  color: #5865f2;
+}
+
+
+.invite-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+.invite-container {
+  max-width: 800px;
+  text-align: center;
+  padding: 40px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #5865F2, #4752C4);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.invite-container h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.invite-container p {
+  font-size: 18px;
+  color: #eaeaea;
+  margin-bottom: 30px;
+}
+
+.invite-btn {
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #5865F2;
+  background-color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none; /* Entfernt die Unterstreichung */
+  transition: all 0.3s ease-in-out;
+}
+
+.invite-btn i {
+  font-size: 20px;
+}
+
+.invite-btn:hover {
+  background-color: #f2f2f2;
+  transform: translateY(-3px);
+}

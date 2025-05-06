@@ -1,0 +1,203 @@
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: #0c0e13;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.navbar-left h1 {
+  font-size: 26px;
+  color: #5865f2;
+  margin: 0;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 30px; /* Abstand zwischen Logo und Menü */
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    right: 20px;
+    position: absolute;
+}
+
+
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo-link:hover h1 {
+  color: #7289da; /* Farbänderung beim Hover */
+}
+
+.desktop-menu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.menu-link {
+  text-decoration: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.menu-link:hover {
+  color: #5865f2;
+}
+
+.add-server-btn, .dashboard-btn, .logout-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.add-server-btn {
+  background-color: #7289da;
+}
+
+.add-server-btn:hover {
+  background-color: #5b6db2;
+}
+
+.dashboard-btn {
+  background: linear-gradient(90deg, #5865f2, #5865f2);
+    box-shadow: 0 0 15px rgb(88 101 242), 0 0 30px rgb(88 101 242);
+}
+
+.dashboard-btn:hover {
+  background-color: #434ab9;
+}
+
+.logout-btn {
+  background-color: #ff253a;
+}
+
+.logout-btn:hover {
+  background-color: #ab1d2b;
+}
+
+.menu-toggle {
+  display: none; /* Standardmäßig unsichtbar */
+  flex-direction: column;
+  cursor: pointer;
+  position: absolute; /* Damit es fixiert wird */
+  right: 20px;
+  z-index: 1001; /* Sicherstellen, dass es über allen Elementen liegt */
+}
+
+.menu-toggle span {
+  background: #fff;
+  height: 3px;
+  width: 25px;
+  margin: 4px 0;
+  transition: 0.3s ease;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 60px;
+  left: 10px;
+  right: 10px;
+  background: rgba(20, 22, 28, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  z-index: 1000;
+}
+
+.mobile-menu.show {
+  display: block;
+}
+
+.menu-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.add-server-mobile {
+    background-color: #2e323d;
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.dashboard-mobile {
+    background-color: #5865f2;
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.logout-mobile {
+    background-color: #ff253a;
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+
+.add-server-mobile:hover {
+  background-color: #5b6db2;
+}
+
+.dashboard-mobile:hover {
+  background-color: #434ab9;
+}
+
+.logout-mobile:hover {
+  background-color: #ab1d2b;
+}
+/* Responsives Design */
+@media (max-width: 768px) {
+
+  .menu-toggle {
+    display: flex; /* Icon sichtbar machen */
+    margin-left: auto; /* Schiebt das Icon nach rechts */
+  }
+
+  .desktop-menu {
+    display: none; /* Desktop-Menü ausblenden */
+  }
+
+  .mobile-menu {
+    display: none;
+  }
+    .navbar-right {
+    display: none; /* Buttons in der mobilen Ansicht ausblenden */
+  }
+}

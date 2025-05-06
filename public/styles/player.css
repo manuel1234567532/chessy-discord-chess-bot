@@ -1,0 +1,194 @@
+  .games-section {
+      margin-top: 20px;
+    }
+
+    .game-entry {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      background: #101218;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 10px 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      color: #eaeaea;
+    }
+
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .game-header h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .game-header .play-icon {
+      font-size: 15px;
+    }
+
+    .game-status {
+    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+    .game-status span.started {
+      color: #00ff99;
+    }
+
+    .game-status span.not-started {
+      color: #ffaa00;
+    }
+
+    .game-status span.ended {
+      color: #ff5555;
+    }
+
+    .game-server {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .game-server span {
+      color: #5865f2;
+    }
+
+    .game-actions {
+      margin-top: 10px;
+    }
+
+    .game-actions button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #5865f2;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .game-actions button:hover {
+      background: #0056b3;
+    }
+    
+   .container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .main-content {
+      flex: 3;
+    }
+
+   .profile-card {
+  flex: 1;
+  background: #101218;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  color: #eaeaea;
+  text-align: center;
+  box-sizing: border-box; /* Padding und Border berücksichtigen */
+  max-width: 100%; /* Sicherstellen, dass es nicht breiter als der Container wird */
+      max-height: 250px;
+}
+
+    .profile-avatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 3px solid #5865f2;
+    box-shadow: 0 4px 10px rgb(88 101 242);
+    }
+
+    .profile-name {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .profile-elo {
+    font-size: 16px;
+    color: #5865f2;
+    font-weight: bold;
+    }
+
+   @media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .profile-card {
+    width: 100%; /* Profile-Karte nimmt die gesamte Breite des Containers ein */
+    margin-bottom: 20px;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.pagination-link {
+  display: inline-block;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #ffffff;
+  background: #1a1a1a;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.pagination-link.active {
+  background: #5865f2;
+  color: #fff;
+  cursor: pointer;
+}
+
+.pagination-link:hover {
+  background: #464fb9;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-left: 10px;
+    font-size: 12px;
+    /* font-weight: bold; */
+    color: #fff;
+    border-radius: 12px;
+    text-transform: capitalize;
+}
+
+/* Grünes Badge für Siege */
+.badge.won {
+  background-color: #1ead42; /* Grün */
+}
+
+/* Rotes Badge für Niederlagen */
+.badge.lost {
+  background-color: #ff5555; /* Rot */
+}
+
+/* Gelbes Badge für Unentschieden */
+.badge.draw {
+  background-color: #ffaa00; /* Gelb */
+}

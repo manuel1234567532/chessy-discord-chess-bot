@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Block private or admin pages
+Disallow: /admin/
+Disallow: /api/
+Disallow: /game/
+
+# Sitemap link for better crawling
+Sitemap: https://chessy.gg/sitemap.xml
